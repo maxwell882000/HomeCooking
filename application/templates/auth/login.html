@@ -1,0 +1,18 @@
+{% extends 'layouts/login_layout.html' %}
+
+{% block content %}
+    <p class="form-header">Введите ваш Email</p>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="input-field">
+            {{ form.email(class='validate') }}
+            {{ form.email.label }}
+            {% for error in form.email.errors %}
+                <span class="helper-text red-text">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-button">
+            {{ form.submit(class='btn waves-effect waves-light') }}
+        </div>
+    </form>
+{% endblock %}
