@@ -4,28 +4,6 @@ from application.resources import strings, keyboards
 import re
 
 
-def process_company_name(message):
-    chat_id = message.chat.id
-    user_id = message.from_user.id
-    language = userservice.get_user_language(user_id)
-
-    def error():
-        error_msg = strings.get_string('welcome.company_name', language)
-        telegram_bot.send_message(chat_id, error_msg)
-        telegram_bot.register_next_step_handler_by_chat_id(chat_id, process_company_name)
-
-    if not message.text:
-        error()
-        return
-    if message.text.startswith('/'):
-        error()
-        return
-    userservice.set_user_company(user_id, message.text)
-    success_message = strings.get_string('welcome.registration_successfully', language)
-    main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-    telegram_bot.send_message(chat_id, success_message, reply_markup=main_menu_keyboard)
-
-
 def process_phone_number(message):
     chat_id = message.chat.id
     user_id = message.from_user.id
@@ -49,10 +27,9 @@ def process_phone_number(message):
                 return
             phone_number = match.group()
             userservice.set_user_phone_number(user_id, phone_number)
-    next_message = strings.get_string('welcome.company_name', language)
-    keyboard = keyboards.get_keyboard('remove')
-    telegram_bot.send_message(chat_id, next_message, reply_markup=keyboard)
-    telegram_bot.register_next_step_handler_by_chat_id(chat_id, process_company_name)
+    success_message = strings.get_string('welcome.registration_successfully', language)
+    main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
+    telegram_bot.send_message(chat_id, success_message, reply_markup=main_menu_keyboard)
 
 
 def process_user_name(message):

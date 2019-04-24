@@ -23,7 +23,7 @@ _main_menu_ru.add(get_string('main_menu.settings'))
 _keyboards_ru['main_menu'] = _main_menu_ru
 _settings_ru = ReplyKeyboardMarkup(resize_keyboard=True)
 _settings_ru.add(get_string('settings.change_user_name'), get_string('settings.change_phone_number'))
-_settings_ru.add(get_string('settings.change_company_name'), get_string('settings.change_language')),
+_settings_ru.add(get_string('settings.change_language')),
 _settings_ru.add(get_string('go_back'))
 _keyboards_ru['settings'] = _settings_ru
 _go_back_ru = ReplyKeyboardMarkup(resize_keyboard=True)
