@@ -1,8 +1,9 @@
 from flask import Flask
-from application.config import Config
+from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_sslify import SSLify
 from telebot import TeleBot, logger
 import os
 import logging
@@ -10,13 +11,16 @@ import logging
 telegram_bot = TeleBot(Config.API_TOKEN, threaded=False)
 
 app = Flask(__name__)
+if app.env == 'production':
+    sslify = SSLify(app=app)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-login = LoginManager(app)
-login.login_view = 'auth.login'
-login.login_message = 'Для входа в систему необходима регистрация.'
-login.login_message_category = 'error'
+if 'ADMIN_DEV' in os.environ or 'PRODUCTION' in os.environ:
+    login = LoginManager(app)
+    login.login_view = 'auth.login'
+    login.login_message = 'Для входа в систему необходима регистрация.'
+    login.login_message_category = 'error'
 
 import application.core.models
 
