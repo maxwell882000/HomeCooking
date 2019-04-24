@@ -23,6 +23,22 @@ class UserAdmin(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
+class DishCategory(db.Model):
+    __tablename__ = 'dish_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    dishes = db.relationship('Dish', lazy='dynamic', backref='category')
+
+
+class Dish(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    image_id = db.Column(db.String)
+    description = db.Column(db.String(500))
+    price = db.Column(db.Integer)
+    category_id = db.Column(db.Integer, db.ForeignKey('dish_categories.id'))
+
+
 @login.user_loader
 def load_user(id):
     return UserAdmin.query.get(int(id))
