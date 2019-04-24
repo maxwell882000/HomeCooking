@@ -5,10 +5,10 @@ _basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Load strings from json
 # Russian language
-_strings_ru = json.loads(open(os.path.join(_basedir, 'stirngs_ru.json', 'r', encoding='utf8').read()))
+_strings_ru = json.loads(open(os.path.join(_basedir, 'strings_ru.json'), 'r', encoding='utf8').read())
 
-#Uzbek language
-_strings_uz = json.loads(open(os.path.join(_basedir, 'strings_uz.json', 'r', encoding='utf8').read()))
+# Uzbek language
+_strings_uz = json.loads(open(os.path.join(_basedir, 'strings_uz.json'), 'r', encoding='utf8').read())
 
 
 def get_string(key, language='ru'):
