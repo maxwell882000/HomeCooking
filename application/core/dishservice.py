@@ -1,5 +1,6 @@
 from application import db
 from application.core.models import Dish, DishCategory
+from application.core import exceptions
 
 
 def get_all_categories() -> DishCategory:
@@ -13,7 +14,8 @@ def get_dishes_by_category_name(name: str, language: str) -> list:
         dish_category = DishCategory.query.filter(DishCategory.name == name).get()
     if dish_category:
         return dish_category.dishes.all()
-    return []
+    else:
+        raise exceptions.CategoryNotFoundError()
 
 
 def get_dish_by_name(name: str, language: str) -> Dish:
