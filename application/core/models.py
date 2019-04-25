@@ -29,6 +29,39 @@ class User(db.Model):
     cart = db.relationship('CartItem', lazy='dynamic', backref='user')
     orders = db.relationship('Order', lazy='dynamic', backref='customer')
 
+    def _dish_in_cart(self, dish) -> bool:
+        """
+        Check if dish is exists in cart
+        :param dish: Dish
+        :return: Check's result
+        """
+        return self.cart.filter(CartItem.dish_id == dish.id).count() > 0
+
+    def add_dish_to_cart(self, dish, count):
+        """
+        Add a dish to cart if there isn't it in cart.
+        And add cart item to database session
+        :param dish: Dish
+        :param count: Numbers of the dish
+        :return: void
+        """
+        if self._dish_in_cart(dish):
+            return
+        cart_item = CartItem(count=count, dish=dish)
+        self.cart.append(cart_item)
+        db.session.add(cart_item)
+
+    def remove_dish_from_cart(self, dish):
+        """
+        Remove dish from cart if it exists
+        :param dish: Dish
+        :return: void
+        """
+        cart_item = self.cart.filter(CartItem.dish_id == dish.id).get()
+        if not cart_item:
+            return
+        self.cart.remove(cart_item)
+
 
 class UserAdmin(db.Model, UserMixin):
     __tablename__ = 'user_admins'
