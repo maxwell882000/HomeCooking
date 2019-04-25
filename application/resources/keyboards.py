@@ -76,3 +76,25 @@ def get_keyboard(key, language='ru'):
         return _keyboards_uz.get(key, _default_value)
     else:
         raise Exception('Invalid language')
+
+
+def from_dish_categories(dish_categories, language: str) -> ReplyKeyboardMarkup:
+    categories_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    categories_keyboard.add(get_string('go_back', language))
+    for category in dish_categories:
+        if language == 'uz':
+            categories_keyboard.add(category.name_uz)
+        else:
+            categories_keyboard.add(category.name)
+    return categories_keyboard
+
+
+def from_dishes(dishes, language: str) -> ReplyKeyboardMarkup:
+    dishes_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    dishes_keyboard.add(get_string('go_back', language))
+    for dish in dishes:
+        if language == 'uz':
+            dishes_keyboard.add(dish.name_uz)
+        else:
+            dishes_keyboard.add(dish.name)
+    return dishes_keyboard
