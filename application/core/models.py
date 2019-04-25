@@ -95,6 +95,7 @@ class DishCategory(db.Model):
     __tablename__ = 'dish_categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
+    name_uz = db.Column(db.String(100))
     dishes = db.relationship('Dish', lazy='dynamic', backref='category')
 
 
@@ -105,8 +106,10 @@ class Dish(db.Model):
     __tablename__ = 'dishes'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
+    name_uz = db.Column(db.String(100))
     image_id = db.Column(db.String)
     description = db.Column(db.String(500))
+    description_uz = db.Column(db.String(500))
     price = db.Column(db.Integer)
     category_id = db.Column(db.Integer, db.ForeignKey('dish_categories.id'))
 
