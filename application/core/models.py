@@ -4,6 +4,9 @@ from flask_login import UserMixin
 
 
 class CartItem(db.Model):
+    """
+    Model for cart item
+    """
     __tablename__ = 'cart_items'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'), primary_key=True)
@@ -12,6 +15,9 @@ class CartItem(db.Model):
 
 
 class OrderItem(db.Model):
+    """
+    Model for order item
+    """
     __tablename__ = 'order_items'
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'), primary_key=True)
@@ -20,6 +26,9 @@ class OrderItem(db.Model):
 
 
 class User(db.Model):
+    """
+    Model for users in Telegram Bot
+    """
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -64,6 +73,9 @@ class User(db.Model):
 
 
 class UserAdmin(db.Model, UserMixin):
+    """
+    Model for users in admin panel
+    """
     __tablename__ = 'user_admins'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), index=True)
@@ -77,6 +89,9 @@ class UserAdmin(db.Model, UserMixin):
 
 
 class DishCategory(db.Model):
+    """
+    Model for dish category
+    """
     __tablename__ = 'dish_categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -84,6 +99,9 @@ class DishCategory(db.Model):
 
 
 class Dish(db.Model):
+    """
+    Model for dishes
+    """
     __tablename__ = 'dishes'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -94,6 +112,10 @@ class Dish(db.Model):
 
 
 class Order(db.Model):
+    """
+    Model for orders
+    Contains class OrderTypes to set type of order
+    """
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -107,5 +129,5 @@ class Order(db.Model):
 
 
 @login.user_loader
-def load_user(id):
-    return UserAdmin.query.get(int(id))
+def load_user(user_id):
+    return UserAdmin.query.get(int(user_id))
