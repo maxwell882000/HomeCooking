@@ -26,7 +26,11 @@ import application.core.models as models
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'db': db, 'User': models.User, 'Dish': models.Dish}
+    return {'db': db,
+            'User': models.User,
+            'Dish': models.Dish,
+            'CartItem': models.CartItem}
+
 
 from application.bot import bp as bot_bp
 app.register_blueprint(bot_bp)
