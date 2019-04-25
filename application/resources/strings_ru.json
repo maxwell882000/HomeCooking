@@ -21,5 +21,7 @@
     "settings.change_language": "🌐 Изменить язык",
     "settings.choose_language": "Выберите язык ниже",
     "settings.success_change_language": "Язык изменён ✅",
+    "catalog.start": "Что вы хотите?",
+    "catalog.error": "Выберите категорию ниже",
     "go_back": "⬅ Назад"
 }
