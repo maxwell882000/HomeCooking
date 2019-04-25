@@ -3,27 +3,35 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 
-cart_items = db.Table('cart_items',
-                      db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-                      db.Column('dish_id', db.Integer, db.ForeignKey('dish.id'), primary_key=True),
-                      db.Column('count', db.Integer))
+class CartItem(db.Model):
+    __tablename__ = 'cart_items'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'), primary_key=True)
+    count = db.Column(db.Integer)
+    dish = db.relationship('Dish')
 
-order_items = db.Table('order_items',
-                       db.Column('order_id', db.Integer, db.ForeignKey('order.id'), primary_key=True),
-                       db.Column('dish_id', db.Integer, db.ForeignKey('dish.id'), primary_key=True),
-                       db.Column('count', db.Integer))
+
+class OrderItem(db.Model):
+    __tablename__ = 'order_items'
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
+    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'), primary_key=True)
+    count = db.Column(db.Integer)
+    dish = db.relationship('Dish')
 
 
 class User(db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     username = db.Column(db.String(100))
     phone_number = db.Column(db.String(15))
     language = db.Column(db.String(5))
-    cart = db.relationship('Dish', secondary=cart_items, lazy='dynamic')
+    cart = db.relationship('CartItem', lazy='dynamic', backref='user')
+    orders = db.relationship('Order', lazy='dynamic', backref='customer')
 
 
 class UserAdmin(db.Model, UserMixin):
+    __tablename__ = 'user_admins'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), index=True)
     password_hash = db.Column(db.String(120))
@@ -43,6 +51,7 @@ class DishCategory(db.Model):
 
 
 class Dish(db.Model):
+    __tablename__ = 'dishes'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     image_id = db.Column(db.String)
@@ -52,11 +61,12 @@ class Dish(db.Model):
 
 
 class Order(db.Model):
+    __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     type = db.Column(db.Integer)
-    order_items = db.relationship('Dish', secondary=order_items, lazy='dynamic',
-                                  backref=db.backref('orders', lazy=True))
+    order_items = db.relationship('OrderItem', lazy='dynamic',
+                                  backref='order')
 
     class OrderTypes:
         PICK_UP = 1
