@@ -41,7 +41,7 @@ _settings_choose_language_ru.add(get_string('language.uzbek'))
 _settings_choose_language_ru.add(get_string('go_back'))
 _keyboards_ru['settings.choose_language'] = _settings_choose_language_ru
 _dish_keyboard_ru = ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
-_dish_keyboard_ru.add(list(range(1, 10)))
+_dish_keyboard_ru.add(*[str(x) for x in list(range(1, 10))])
 _dish_keyboard_ru.add(get_string('catalog.cart'), get_string('go_back'))
 _keyboards_ru['catalog.dish_keyboard'] = _dish_keyboard_ru
 
@@ -72,7 +72,7 @@ _settings_choose_language_uz.add(get_string('language.uzbek'))
 _settings_choose_language_uz.add(get_string('go_back', 'uz'))
 _keyboards_uz['settings.choose_language'] = _settings_choose_language_uz
 _dish_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
-_dish_keyboard_uz.add(list(range(1, 10)))
+_dish_keyboard_uz.add(*[str(x) for x in list(range(1, 10))])
 _dish_keyboard_uz.add(get_string('catalog.cart', 'uz'), get_string('go_back', 'uz'))
 _keyboards_uz['catalog.dish_keyboard'] = _dish_keyboard_uz
 
@@ -93,7 +93,7 @@ def from_dish_categories(dish_categories, language: str) -> ReplyKeyboardMarkup:
         names = [category.name_uz for category in dish_categories]
     else:
         names = [category.name for category in dish_categories]
-    categories_keyboard.add(names)
+    categories_keyboard.add(*names)
     categories_keyboard.add(get_string('go_back', language))
     return categories_keyboard
 
@@ -105,7 +105,7 @@ def from_dishes(dishes, language: str) -> ReplyKeyboardMarkup:
         names = [dish.name_uz for dish in dishes]
     else:
         names = [dish.name for dish in dishes]
-    dishes_keyboard.add(names)
+    dishes_keyboard.add(*names)
     return dishes_keyboard
 
 
@@ -116,7 +116,7 @@ def from_cart_items(cart_items, language) -> ReplyKeyboardMarkup:
     else:
         names = [cart_item.dish.name for cart_item in cart_items]
     names = ['❌❌❌:x:' + name for name in names]
-    map(cart_items_keyboard.add, names)
+    cart_items_keyboard.add(*names)
     cart_items_keyboard.add(get_string('go_back', language), get_string('cart.clear', language))
     cart_items_keyboard.add(get_string('catalog.make_order', language))
     return cart_items_keyboard
