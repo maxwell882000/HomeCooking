@@ -108,6 +108,7 @@ class Dish(db.Model):
     name = db.Column(db.String(100))
     name_uz = db.Column(db.String(100))
     image_id = db.Column(db.String)
+    image_path = db.Column(db.String)
     description = db.Column(db.String(500))
     description_uz = db.Column(db.String(500))
     price = db.Column(db.Integer)
