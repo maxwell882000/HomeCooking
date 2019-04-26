@@ -132,6 +132,14 @@ class Order(db.Model):
         DELIVERY = 2
 
 
+class UserDish(db.Model):
+    """
+    Model for saving current dish of user
+    """
+    user_id = db.Column(db.Integer, index=True, primary_key=True)
+    dish_id = db.Column(db.Integer, index=True)
+
+
 @login.user_loader
 def load_user(user_id):
     return UserAdmin.query.get(int(user_id))
