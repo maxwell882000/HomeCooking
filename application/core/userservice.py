@@ -1,5 +1,6 @@
 from application import db
 from application.core.models import User, UserAdmin
+from . import dishservice
 
 
 def is_user_exists(user_id: int):
@@ -71,3 +72,26 @@ def is_admin_user_exists(email):
 
 def get_all_bot_users():
     return User.query.all()
+
+
+def get_user_cart(user_id: int) -> list:
+    user = get_user_by_id(user_id)
+    return user.cart.all()
+
+
+def clear_user_cart(user_id: int):
+    user = get_user_by_id(user_id)
+    dishes = [cart_item.dish for cart_item in user.cart.all()]
+    for dish in dishes:
+        user.remove_dish_from_cart(dish)
+    db.session.commit()
+
+
+def remove_dish_from_user_cart(user_id: int, dish_name: str, language: str) -> bool:
+    user = get_user_by_id(user_id)
+    dish = dishservice.get_dish_by_name(dish_name, language)
+    if not dish:
+        return False
+    user.remove_dish_from_cart(dish)
+    db.session.commit()
+    return True
