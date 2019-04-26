@@ -24,3 +24,8 @@ def get_dish_by_name(name: str, language: str) -> Dish:
     else:
         dish = Dish.query.filter(Dish.name == name).get()
     return dish
+
+
+def set_dish_image_id(dish: Dish, image_id: str):
+    dish.image_id = image_id
+    db.session.commit()
