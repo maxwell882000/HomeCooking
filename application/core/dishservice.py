@@ -9,9 +9,9 @@ def get_all_categories() -> DishCategory:
 
 def get_dishes_by_category_name(name: str, language: str) -> list:
     if language == 'uz':
-        dish_category = DishCategory.query.filter(DishCategory.name_uz == name).get()
+        dish_category = DishCategory.query.filter(DishCategory.name_uz == name).first()
     else:
-        dish_category = DishCategory.query.filter(DishCategory.name == name).get()
+        dish_category = DishCategory.query.filter(DishCategory.name == name).first()
     if dish_category:
         return dish_category.dishes.all()
     else:
@@ -20,10 +20,14 @@ def get_dishes_by_category_name(name: str, language: str) -> list:
 
 def get_dish_by_name(name: str, language: str) -> Dish:
     if language == 'uz':
-        dish = Dish.query.filter(Dish.name_uz == name).get()
+        dish = Dish.query.filter(Dish.name_uz == name).first()
     else:
-        dish = Dish.query.filter(Dish.name == name).get()
+        dish = Dish.query.filter(Dish.name == name).first()
     return dish
+
+
+def get_dish_by_id(dish_id: int):
+    return Dish.query.get(dish_id)
 
 
 def set_dish_image_id(dish: Dish, image_id: str):
