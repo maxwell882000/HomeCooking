@@ -23,5 +23,7 @@
     "settings.success_change_language": "Язык изменён ✅UZ",
     "catalog.start": "Что вы хотите?UZ",
     "catalog.error": "Выберите категорию нижеUZ",
+    "catalog.cart": "\uD83D\uDED2 КорзинаUZ",
+    "catalog.make_order": "\uD83D\uDCD1 Оформить заказUZ",
     "go_back": "⬅ НазадUZ"
 }

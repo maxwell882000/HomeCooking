@@ -23,5 +23,10 @@
     "settings.success_change_language": "Язык изменён ✅",
     "catalog.start": "Что вы хотите?",
     "catalog.error": "Выберите категорию ниже",
-    "go_back": "⬅ Назад"
+    "catalog.cart": "\uD83D\uDED2 Корзина",
+    "catalog.make_order": "\uD83D\uDCD1 Оформить заказ",
+    "cart.empty": "Ваша корзина пуста",
+    "cart.summary": "Итого",
+    "go_back": "⬅ Назад",
+    "sum": "сум"
 }
