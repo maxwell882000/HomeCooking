@@ -29,7 +29,8 @@ def make_shell_context():
     return {'db': db,
             'User': models.User,
             'Dish': models.Dish,
-            'CartItem': models.CartItem}
+            'CartItem': models.CartItem,
+            'DishCategory': models.DishCategory}
 
 
 from application.bot import bp as bot_bp
