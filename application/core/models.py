@@ -38,13 +38,13 @@ class User(db.Model):
     cart = db.relationship('CartItem', lazy='dynamic', backref='user')
     orders = db.relationship('Order', lazy='dynamic', backref='customer')
 
-    def _dish_in_cart(self, dish) -> bool:
+    def _get_cart_item_for_dish(self, dish) -> CartItem:
         """
         Check if dish is exists in cart
         :param dish: Dish
         :return: Check's result
         """
-        return self.cart.filter(CartItem.dish_id == dish.id).count() > 0
+        return self.cart.filter(CartItem.dish_id == dish.id).first()
 
     def add_dish_to_cart(self, dish, count):
         """
@@ -54,7 +54,9 @@ class User(db.Model):
         :param count: Numbers of the dish
         :return: void
         """
-        if self._dish_in_cart(dish):
+        cart_item = self._get_cart_item_for_dish(dish)
+        if cart_item:
+            cart_item.count = count
             return
         cart_item = CartItem(count=count, dish=dish)
         self.cart.append(cart_item)
@@ -66,7 +68,7 @@ class User(db.Model):
         :param dish: Dish
         :return: void
         """
-        cart_item = self.cart.filter(CartItem.dish_id == dish.id).get()
+        cart_item = self._get_cart_item_for_dish(dish)
         if not cart_item:
             return
         self.cart.remove(cart_item)
