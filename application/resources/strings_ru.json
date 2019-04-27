@@ -32,6 +32,10 @@
     "catalog.continue": "Продолжим? \uD83D\uDE09",
     "cart.empty": "Ваша корзина пуста",
     "cart.summary": "Итого",
+    "cart.clear": "\uD83D\uDD04 Очистить",
+    "cart.error": "Выберите действие ниже",
+    "cart.help": "❌ <b>Наименование</b> - удалить блюдо\n\uD83D\uDD04 <b>Очистить</b> - очистить корзину",
+    "dish.price": "Цена",
     "go_back": "⬅ Назад",
     "sum": "сум"
 }
