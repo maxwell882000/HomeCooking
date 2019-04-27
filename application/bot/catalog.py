@@ -3,7 +3,6 @@ from application.core import userservice, dishservice
 from application.resources import strings, keyboards
 from telebot.types import Message
 from application.core import exceptions
-from . import cart
 
 
 def check_catalog(message: Message):
@@ -117,7 +116,9 @@ def catalog_processor(message: Message):
         error()
         return
     if strings.get_string('go_back', language) in message.text:
-        back_to_the_catalog(chat_id, language)
+        main_menu_message = strings.get_string('main_menu.choose_option', language)
+        main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
+        bot.send_message(chat_id, main_menu_message, reply_markup=main_menu_keyboard)
     elif strings.get_string('catalog.cart', language) in message.text:
         cart.cart_processor(message)
     elif strings.get_string('catalog.make_order', language) in message.text:
@@ -148,3 +149,6 @@ def catalog(message: Message):
     category_keyboard = keyboards.from_dish_categories(categories, language)
     bot.send_message(chat_id, catalog_message, reply_markup=category_keyboard)
     bot.register_next_step_handler_by_chat_id(chat_id, catalog_processor)
+
+
+from . import cart
