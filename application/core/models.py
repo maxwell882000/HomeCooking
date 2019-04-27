@@ -35,7 +35,7 @@ class User(db.Model):
     username = db.Column(db.String(100))
     phone_number = db.Column(db.String(15))
     language = db.Column(db.String(5))
-    cart = db.relationship('CartItem', lazy='dynamic', backref='user')
+    cart = db.relationship('CartItem', lazy='dynamic', backref='user', cascade='all, delete-orphan')
     orders = db.relationship('Order', lazy='dynamic', backref='customer')
 
     def _get_cart_item_for_dish(self, dish) -> CartItem:
