@@ -25,5 +25,13 @@
     "catalog.error": "Выберите категорию нижеUZ",
     "catalog.cart": "\uD83D\uDED2 КорзинаUZ",
     "catalog.make_order": "\uD83D\uDCD1 Оформить заказUZ",
-    "go_back": "⬅ НазадUZ"
+    "catalog.choose_dish": "Выберите блюдоUZ",
+    "catalog.dish_error": "Выберите блюдо из списка нижеUZ",
+    "catalog.dish_action_helper": "Выберите или введите количество:UZ",
+    "catalog.dish_action_error": "Выберите или введите количество:UZ",
+    "catalog.continue": "Продолжим? \uD83D\uDE09UZ",
+    "cart.empty": "Ваша корзина пустаUZ",
+    "cart.summary": "ИтогоUZ",
+    "go_back": "⬅ НазадUZ",
+    "sum": "so`m"
 }
