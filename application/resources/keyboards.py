@@ -115,7 +115,7 @@ def from_cart_items(cart_items, language) -> ReplyKeyboardMarkup:
         names = [cart_item.dish.name_uz for cart_item in cart_items]
     else:
         names = [cart_item.dish.name for cart_item in cart_items]
-    names = ['❌' + name for name in names]
+    names = ['❌ ' + name for name in names]
     cart_items_keyboard.add(*names)
     cart_items_keyboard.add(get_string('go_back', language), get_string('cart.clear', language))
     cart_items_keyboard.add(get_string('catalog.make_order', language))

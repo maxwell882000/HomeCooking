@@ -33,7 +33,7 @@ def cart_action_processor(message: Message):
         pass
         # TODO: Redirect to order processor
     else:
-        dish_name = message.text[1:]
+        dish_name = message.text[2:]
         removing_result = userservice.remove_dish_from_user_cart(user_id, dish_name, language)
         if removing_result:
             cart = userservice.get_user_cart(user_id)
