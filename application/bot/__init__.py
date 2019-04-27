@@ -8,7 +8,7 @@ import os
 
 bp = Blueprint('bot', __name__)
 
-from application.bot import registration, settings
+from application.bot import registration, settings, catalog, cart
 
 if 'PRODUCTION' in os.environ:
     @bp.route(Config.WEBHOOK_URL_PATH, methods=['POST'])
