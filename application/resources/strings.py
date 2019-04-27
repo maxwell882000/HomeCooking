@@ -27,7 +27,7 @@ def get_string(key, language='ru'):
 
 def from_cart_items(cart_items, language, total) -> str:
     cart_contains = ''
-    cart_contains += '<b>{}</b>:' % get_string('catalog.cart', language)
+    cart_contains += '<b>{}</b>:'.format(get_string('catalog.cart', language))
     cart_contains += '\n\n'
     cart_str_item = "<b>{name}</b>\n{count} x {price} = {sum}"
     for cart_item in cart_items:
@@ -51,7 +51,7 @@ def from_cart_items(cart_items, language, total) -> str:
 
 
 def from_dish(dish: Dish, language: str) -> str:
-    dish_str_template = '{name}\n\n{description\n\n{price_str}: {price} {sum_str}}'
+    dish_str_template = '{name}\n\n{description}\n\n{price_str}: {price} {sum_str}'
     if language == 'uz':
         dish_str = dish_str_template.format(name=dish.name_uz,
                                             description=dish.description_uz,
