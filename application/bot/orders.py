@@ -137,8 +137,11 @@ def address_processor(message: Message):
         _to_the_payment_method(chat_id, language)
     elif message.location:
         location = message.location
-        orderservice.set_address_by_map_location(user_id, (location.latitude, location.longitude))
-        _to_the_payment_method(chat_id, language)
+        result = orderservice.set_address_by_map_location(user_id, (location.latitude, location.longitude))
+        if result:
+            _to_the_payment_method(chat_id, language)
+        else:
+            error()
     else:
         error()
 

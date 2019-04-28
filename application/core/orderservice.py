@@ -1,5 +1,6 @@
 from application import db
-from application.core.models import Order, OrderItem, User
+from application.core.models import Order, User
+import geocoder
 
 
 def get_current_order_by_user(user_id: int) -> Order:
@@ -64,7 +65,7 @@ def set_address_by_string(user_id: int, address: str):
     db.session.commit()
 
 
-def set_address_by_map_location(user_id: int, map_location: tuple):
+def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
     """
     Set address by location sent by user
     :param user_id: User's Telegram-ID
@@ -73,8 +74,12 @@ def set_address_by_map_location(user_id: int, map_location: tuple):
     """
     latitude = map_location[0]
     longitude = map_location[1]
-    # TODO: Get address by map location. How to?
-    pass
+    location = geocoder.yandex([latitude, longitude], method='reverse', lang='ru-RU')
+    if not location.json:
+        return False
+    current_order = get_current_order_by_user(user_id)
+    current_order.address = location.json.get('address')
+    return True
 
 
 def confirm_order(user_id: int):
