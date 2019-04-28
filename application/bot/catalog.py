@@ -122,8 +122,7 @@ def catalog_processor(message: Message):
     elif strings.get_string('catalog.cart', language) in message.text:
         cart.cart_processor(message)
     elif strings.get_string('catalog.make_order', language) in message.text:
-        # TODO: Redirect to order processor
-        pass
+        orders.order_processor(message)
     else:
         try:
             category_name = message.text
@@ -151,4 +150,4 @@ def catalog(message: Message):
     bot.register_next_step_handler_by_chat_id(chat_id, catalog_processor)
 
 
-from . import cart
+from . import cart, orders

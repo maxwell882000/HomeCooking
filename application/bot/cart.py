@@ -3,6 +3,7 @@ from application.core import userservice
 from application.resources import strings, keyboards
 from telebot.types import Message
 from .catalog import back_to_the_catalog, catalog_processor
+from .orders import order_processor
 
 
 def _total_cart_sum(cart) -> int:
@@ -30,8 +31,7 @@ def cart_action_processor(message: Message):
         userservice.clear_user_cart(user_id)
         back_to_the_catalog(chat_id, language)
     elif strings.get_string('catalog.make_order', language) in message.text:
-        pass
-        # TODO: Redirect to order processor
+        order_processor(message)
     else:
         dish_name = message.text[2:]
         removing_result = userservice.remove_dish_from_user_cart(user_id, dish_name, language)
