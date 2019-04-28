@@ -1,5 +1,6 @@
 from application import db
 from application.core.models import Order, User
+from . import userservice
 import geocoder
 
 
@@ -90,4 +91,5 @@ def confirm_order(user_id: int):
     """
     current_order = get_current_order_by_user(user_id)
     current_order.confirmed = True
+    userservice.clear_user_cart(user_id)
     db.session.commit()
