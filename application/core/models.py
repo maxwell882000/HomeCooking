@@ -129,6 +129,7 @@ class Order(db.Model):
     payment_method = db.Column(db.String(50))
     address = db.Column(db.String(100))
     confirmed = db.Column(db.Boolean, default=False)
+    delivery_price = db.Column(db.Integer)
     order_items = db.relationship('OrderItem', lazy='dynamic',
                                   backref='order')
 
