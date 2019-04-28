@@ -125,13 +125,22 @@ class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    type = db.Column(db.Integer)
+    shipping_method = db.Column(db.String(50))
+    payment_method = db.Column(db.String(50))
+    address = db.Column(db.String(100))
+    confirmed = db.Column(db.Boolean, default=False)
     order_items = db.relationship('OrderItem', lazy='dynamic',
                                   backref='order')
 
-    class OrderTypes:
-        PICK_UP = 1
-        DELIVERY = 2
+    class ShippingMethods:
+        PICK_UP = 'pickup'
+        DELIVERY = 'delivery'
+
+    class PaymentMethods:
+        CASH = 'cash'
+        TERMINAL = 'terminal'
+        CLICK = 'click'
+        PAYME = 'payme'
 
 
 class UserDish(db.Model):
