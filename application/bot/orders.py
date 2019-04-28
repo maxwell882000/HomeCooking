@@ -14,14 +14,18 @@ def _total_order_sum(order_items) -> int:
 
 def _to_the_shipping_method(chat_id, language):
     order_shipping_method_message = strings.get_string('order.shipping_method', language)
-    order_shipping_method_keyboard = keyboards.get_string('order.shipping_methods', language)
+    order_shipping_method_keyboard = keyboards.get_keyboard('order.shipping_methods', language)
     bot.send_message(chat_id, order_shipping_method_message, parse_mode='HTML',
                      reply_markup=order_shipping_method_keyboard)
     bot.register_next_step_handler_by_chat_id(chat_id, shipping_method_processor)
 
 
-def _to_the_payment_method(chat_id, language):
-    payment_message = strings.get_string('order.payment', language)
+def _to_the_payment_method(chat_id, language, user_id: int):
+    current_order = orderservice.get_current_order_by_user(user_id)
+    if current_order.shipping_method == Order.ShippingMethods.PICK_UP:
+        payment_message = strings.get_string('order.payment_pickup', language)
+    else:
+        payment_message = strings.get_string('order.payment_delivery', language)
     payment_keyboard = keyboards.get_keyboard('order.payment', language)
     bot.send_message(chat_id, payment_message, reply_markup=payment_keyboard, parse_mode='HTML')
     bot.register_next_step_handler_by_chat_id(chat_id, payment_method_processor)
@@ -69,11 +73,11 @@ def shipping_method_processor(message: Message):
         error()
         return
     orderservice.make_an_order(user_id)
-    if strings.get_string('go_back', language) in message.text:
+    if strings.get_string('go_to_menu', language) in message.text:
         back_to_the_catalog(chat_id, language)
     elif strings.from_order_shipping_method(Order.ShippingMethods.PICK_UP, language) in message.text:
         orderservice.set_shipping_method(user_id, Order.ShippingMethods.PICK_UP)
-        _to_the_payment_method(chat_id, language)
+        _to_the_payment_method(chat_id, language, user_id)
     elif strings.from_order_shipping_method(Order.ShippingMethods.DELIVERY, language) in message.text:
         orderservice.set_shipping_method(user_id, Order.ShippingMethods.DELIVERY)
         _to_the_address(chat_id, language)
@@ -133,13 +137,19 @@ def address_processor(message: Message):
         bot.register_next_step_handler_by_chat_id(chat_id, address_processor)
 
     if message.text:
+        if strings.get_string('go_back', language) in message.text:
+            _to_the_shipping_method(chat_id, language)
+            return
+        elif strings.get_string('go_to_menu', language) in message.text:
+            back_to_the_catalog(chat_id, language)
+            return
         orderservice.set_address_by_string(user_id, message.text)
-        _to_the_payment_method(chat_id, language)
+        _to_the_payment_method(chat_id, language, user_id)
     elif message.location:
         location = message.location
         result = orderservice.set_address_by_map_location(user_id, (location.latitude, location.longitude))
         if result:
-            _to_the_payment_method(chat_id, language)
+            _to_the_payment_method(chat_id, language, user_id)
         else:
             error()
     else:
