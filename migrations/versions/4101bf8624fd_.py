@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 619137aece7c
+Revision ID: 4101bf8624fd
 Revises: 
-Create Date: 2019-04-26 02:23:10.610612
+Create Date: 2019-04-28 19:37:04.740752
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '619137aece7c'
+revision = '4101bf8624fd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,6 +21,7 @@ def upgrade():
     op.create_table('dish_categories',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=True),
+    sa.Column('name_uz', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_admins',
@@ -30,6 +31,13 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_user_admins_email'), 'user_admins', ['email'], unique=False)
+    op.create_table('user_dish',
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('dish_id', sa.Integer(), nullable=True),
+    sa.PrimaryKeyConstraint('user_id')
+    )
+    op.create_index(op.f('ix_user_dish_dish_id'), 'user_dish', ['dish_id'], unique=False)
+    op.create_index(op.f('ix_user_dish_user_id'), 'user_dish', ['user_id'], unique=False)
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=True),
@@ -41,8 +49,11 @@ def upgrade():
     op.create_table('dishes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=True),
+    sa.Column('name_uz', sa.String(length=100), nullable=True),
     sa.Column('image_id', sa.String(), nullable=True),
+    sa.Column('image_path', sa.String(), nullable=True),
     sa.Column('description', sa.String(length=500), nullable=True),
+    sa.Column('description_uz', sa.String(length=500), nullable=True),
     sa.Column('price', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['dish_categories.id'], ),
@@ -51,7 +62,11 @@ def upgrade():
     op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('type', sa.Integer(), nullable=True),
+    sa.Column('shipping_method', sa.String(length=50), nullable=True),
+    sa.Column('payment_method', sa.String(length=50), nullable=True),
+    sa.Column('address', sa.String(length=100), nullable=True),
+    sa.Column('confirmed', sa.Boolean(), nullable=True),
+    sa.Column('delivery_price', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -81,6 +96,9 @@ def downgrade():
     op.drop_table('orders')
     op.drop_table('dishes')
     op.drop_table('users')
+    op.drop_index(op.f('ix_user_dish_user_id'), table_name='user_dish')
+    op.drop_index(op.f('ix_user_dish_dish_id'), table_name='user_dish')
+    op.drop_table('user_dish')
     op.drop_index(op.f('ix_user_admins_email'), table_name='user_admins')
     op.drop_table('user_admins')
     op.drop_table('dish_categories')
