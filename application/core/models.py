@@ -132,6 +132,24 @@ class Order(db.Model):
     order_items = db.relationship('OrderItem', lazy='dynamic',
                                   backref='order')
 
+    def fill_from_user_cart(self, cart):
+        """
+        Fill order items from user's cart.
+        Add new objects to db.session
+        :param cart: User's cart
+        :return: void
+        """
+        # Clear current order items collection
+        for order_item in self.order_items:
+            self.order_items.remove(order_item)
+        # And add fresh cart items to order
+        for cart_item in cart:
+            order_item = OrderItem()
+            order_item.count = cart_item.count
+            order_item.dish = cart_item.dish
+            self.order_items.append(order_item)
+            db.session.add(order_item)
+
     class ShippingMethods:
         PICK_UP = 'pickup'
         DELIVERY = 'delivery'
