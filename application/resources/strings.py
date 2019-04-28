@@ -1,6 +1,6 @@
 import os
 import json
-from application.core.models import Dish
+from application.core.models import Dish, Order
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -65,3 +65,48 @@ def from_dish(dish: Dish, language: str) -> str:
                                             price=_format_number(dish.price),
                                             sum_str=get_string('sum', language))
     return dish_str
+
+
+def from_order_shipping_method(value: str, language: str) -> str:
+    return get_string('order.' + value, language)
+
+
+def from_order_payment_method(value: str, language: str) -> str:
+    return get_string('order.' + value, language)
+
+
+def from_order(order: Order, language: str, total: int) -> str:
+    order_content = "<b>{}</b>:".format(get_string('your_order', language))
+    order_content += '\n\n'
+    order_content += '{phone}: {phone_value}\n'.format(phone=get_string('phone', language),
+                                                       phone_value=order.customer.phone_number)
+    order_content += '{payment_type}: {payment_type_value}' \
+        .format(payment_type=get_string('payment', language),
+                payment_type_value=from_order_payment_method(order.payment_method, language))
+    if order.address:
+        order_content += '{address}: {address_value}'.format(address=get_string('address', language),
+                                                             address_value=order.address)
+    order_content += '\n\n'
+    order_item_tmpl = '<b>{name}</b>\n{count} x {price} = {sum} {sum_str}\n'
+    for order_item in order.order_items.all():
+        dish = order_item.dish
+        if language == 'uz':
+            dish_name = dish.name_uz
+        else:
+            dish_name = dish.name
+        order_item_str = order_item_tmpl.format(name=dish_name,
+                                                count=order_item.count,
+                                                price=dish.price,
+                                                sum=order_item.count * dish.price,
+                                                sum_str=get_string('sum', language))
+        order_content += order_item_str
+    order_content += "<b>{}</b>: {} {}".format(get_string('cart.summary', language),
+                                                 _format_number(total),
+                                                 get_string('sum', language))
+    if order.delivery_price:
+        order_content += '\n\n'
+        order_content += '<i>{}</i>: {} {}'.format(get_string('delivery_price', language),
+                                                   order.delivery_price,
+                                                   get_string('sum', language))
+        order_content += '\n\n'
+        order_content += '<i>{}</i>'.format(get_string('order.delivery_price_helper', language))
