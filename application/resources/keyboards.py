@@ -54,6 +54,7 @@ _order_location_keyboard_ru = ReplyKeyboardMarkup(resize_keyboard=True, row_widt
 location_button = KeyboardButton(get_string('my_location'), request_location=True)
 _order_location_keyboard_ru.add(location_button)
 _order_location_keyboard_ru.add(get_string('go_back'), get_string('go_to_menu'))
+_keyboards_ru['order.address'] = _order_location_keyboard_ru
 _order_payment_keyboard_ru = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
 _order_payment_keyboard_ru.add(from_order_payment_method(Order.PaymentMethods.CASH, 'ru'),
                                from_order_payment_method(Order.PaymentMethods.TERMINAL, 'ru'),
@@ -62,8 +63,8 @@ _order_payment_keyboard_ru.add(from_order_payment_method(Order.PaymentMethods.CA
                                get_string('go_back'), get_string('go_to_menu'))
 _keyboards_ru['order.payment'] = _order_payment_keyboard_ru
 _order_confirmation_keyboard_ru = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-_order_payment_keyboard_ru.add(get_string('order.confirm'), get_string('order.cancel'))
-_keyboards_ru['order.confirmation'] = _order_payment_keyboard_ru
+_order_confirmation_keyboard_ru.add(get_string('order.confirm'), get_string('order.cancel'))
+_keyboards_ru['order.confirmation'] = _order_confirmation_keyboard_ru
 
 # Initialization uzbek keyboards
 _welcome_phone_number_uz = ReplyKeyboardMarkup(resize_keyboard=True)

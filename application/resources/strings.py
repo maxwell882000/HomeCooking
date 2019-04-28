@@ -80,9 +80,13 @@ def from_order(order: Order, language: str, total: int) -> str:
     order_content += '\n\n'
     order_content += '{phone}: {phone_value}\n'.format(phone=get_string('phone', language),
                                                        phone_value=order.customer.phone_number)
-    order_content += '{payment_type}: {payment_type_value}' \
+    order_content += '{payment_type}: {payment_type_value}\n' \
         .format(payment_type=get_string('payment', language),
                 payment_type_value=from_order_payment_method(order.payment_method, language))
+    order_content += '{shipping_method}: {shipping_method_value}\n'.format(
+        shipping_method=get_string('shipping_method', language),
+        shipping_method_value=from_order_shipping_method(order.shipping_method, language)
+    )
     if order.address:
         order_content += '{address}: {address_value}'.format(address=get_string('address', language),
                                                              address_value=order.address)
@@ -110,3 +114,4 @@ def from_order(order: Order, language: str, total: int) -> str:
                                                    get_string('sum', language))
         order_content += '\n\n'
         order_content += '<i>{}</i>'.format(get_string('order.delivery_price_helper', language))
+    return order_content
