@@ -131,7 +131,7 @@ class Order(db.Model):
     confirmed = db.Column(db.Boolean, default=False)
     delivery_price = db.Column(db.Integer)
     order_items = db.relationship('OrderItem', lazy='dynamic',
-                                  backref='order')
+                                  backref='order', cascade='all, delete-orphan')
 
     def fill_from_user_cart(self, cart):
         """
@@ -141,7 +141,7 @@ class Order(db.Model):
         :return: void
         """
         # Clear current order items collection
-        for order_item in self.order_items:
+        for order_item in self.order_items.all():
             self.order_items.remove(order_item)
         # And add fresh cart items to order
         for cart_item in cart:
