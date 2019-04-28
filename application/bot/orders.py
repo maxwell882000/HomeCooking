@@ -23,7 +23,7 @@ def _to_the_shipping_method(chat_id, language):
 def _to_the_payment_method(chat_id, language):
     payment_message = strings.get_string('order.payment', language)
     payment_keyboard = keyboards.get_keyboard('order.payment', language)
-    bot.send_message(chat_id, payment_message, reply_markup=payment_keyboard)
+    bot.send_message(chat_id, payment_message, reply_markup=payment_keyboard, parse_mode='HTML')
     bot.register_next_step_handler_by_chat_id(chat_id, payment_method_processor)
 
 
@@ -129,7 +129,7 @@ def address_processor(message: Message):
 
     def error():
         error_msg = strings.get_string('order.address_error')
-        bot.send_message(chat_id, error_msg)
+        bot.send_message(chat_id, error_msg, parse_mode='HTML')
         bot.register_next_step_handler_by_chat_id(chat_id, address_processor)
 
     if message.text:
