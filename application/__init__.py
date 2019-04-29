@@ -30,7 +30,8 @@ def make_shell_context():
             'User': models.User,
             'Dish': models.Dish,
             'CartItem': models.CartItem,
-            'DishCategory': models.DishCategory}
+            'DishCategory': models.DishCategory,
+            'Order': models.Order}
 
 
 from application.bot import bp as bot_bp
