@@ -105,8 +105,8 @@ def from_order(order: Order, language: str, total: int) -> str:
                                                 sum_str=get_string('sum', language))
         order_content += order_item_str
     order_content += "<b>{}</b>: {} {}".format(get_string('cart.summary', language),
-                                                 _format_number(total),
-                                                 get_string('sum', language))
+                                               _format_number(total),
+                                               get_string('sum', language))
     if order.delivery_price:
         order_content += '\n\n'
         order_content += '<i>{}</i>: {} {}'.format(get_string('delivery_price', language),
