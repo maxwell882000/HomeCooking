@@ -96,6 +96,26 @@ _dish_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
 _dish_keyboard_uz.add(*[str(x) for x in list(range(1, 10))])
 _dish_keyboard_uz.add(get_string('catalog.cart', 'uz'), get_string('go_back', 'uz'))
 _keyboards_uz['catalog.dish_keyboard'] = _dish_keyboard_uz
+_shipping_methods_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+_shipping_methods_keyboard_uz.add(from_order_shipping_method(Order.ShippingMethods.DELIVERY, 'uz'),
+                                  from_order_shipping_method(Order.ShippingMethods.PICK_UP, 'uz'),
+                                  get_string('go_to_menu', 'uz'))
+_keyboards_uz['order.shipping_methods'] = _shipping_methods_keyboard_uz
+_order_location_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+location_button_uz = KeyboardButton(get_string('my_location', 'uz'), request_location=True)
+_order_location_keyboard_uz.add(location_button_uz)
+_order_location_keyboard_uz.add(get_string('go_back', 'uz'), get_string('go_to_menu', 'uz'))
+_keyboards_uz['order.address'] = _order_location_keyboard_uz
+_order_payment_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+_order_payment_keyboard_uz.add(from_order_payment_method(Order.PaymentMethods.CASH, 'uz'),
+                               from_order_payment_method(Order.PaymentMethods.TERMINAL, 'uz'),
+                               from_order_payment_method(Order.PaymentMethods.PAYME, 'uz'),
+                               from_order_payment_method(Order.PaymentMethods.CLICK, 'uz'),
+                               get_string('go_back', 'uz'), get_string('go_to_menu', 'uz'))
+_keyboards_uz['order.payment'] = _order_payment_keyboard_uz
+_order_confirmation_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+_order_confirmation_keyboard_uz.add(get_string('order.confirm', 'uz'), get_string('order.cancel', 'uz'))
+_keyboards_uz['order.confirmation'] = _order_confirmation_keyboard_uz
 
 
 def get_keyboard(key, language='ru'):
