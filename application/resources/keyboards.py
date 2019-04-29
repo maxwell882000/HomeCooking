@@ -65,6 +65,10 @@ _keyboards_ru['order.payment'] = _order_payment_keyboard_ru
 _order_confirmation_keyboard_ru = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
 _order_confirmation_keyboard_ru.add(get_string('order.confirm'), get_string('order.cancel'))
 _keyboards_ru['order.confirmation'] = _order_confirmation_keyboard_ru
+_comments_keyboard_ru = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+_comments_keyboard_ru.add(*[get_string('comments.point_' + str(x)) for x in list(reversed(range(1, 6)))])
+_comments_keyboard_ru.add(get_string('go_to_menu'))
+_keyboards_ru['comments.send_comment'] = _comments_keyboard_ru
 
 # Initialization uzbek keyboards
 _welcome_phone_number_uz = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -116,6 +120,10 @@ _keyboards_uz['order.payment'] = _order_payment_keyboard_uz
 _order_confirmation_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
 _order_confirmation_keyboard_uz.add(get_string('order.confirm', 'uz'), get_string('order.cancel', 'uz'))
 _keyboards_uz['order.confirmation'] = _order_confirmation_keyboard_uz
+_comments_keyboard_uz = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+_comments_keyboard_uz.add(*[get_string('comments.point_' + str(x), 'uz') for x in list(reversed(range(1, 6)))])
+_comments_keyboard_uz.add(get_string('go_to_menu', 'uz'))
+_keyboards_uz['comments.send_comment'] = _comments_keyboard_uz
 
 
 def get_keyboard(key, language='ru'):
