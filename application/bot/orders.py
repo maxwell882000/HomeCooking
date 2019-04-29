@@ -171,10 +171,10 @@ def confirmation_processor(message: Message):
         return
     if strings.get_string('order.confirm', language) in message.text:
         orderservice.confirm_order(user_id)
-        order_success_message = strings.get_string('order.success')
+        order_success_message = strings.get_string('order.success', language)
         back_to_the_catalog(chat_id, language, order_success_message)
     elif strings.get_string('order.cancel', language) in message.text:
-        order_canceled_message = strings.get_string('order.canceled')
+        order_canceled_message = strings.get_string('order.canceled', language)
         back_to_the_catalog(chat_id, language, order_canceled_message)
     else:
         error()
