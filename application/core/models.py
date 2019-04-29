@@ -37,6 +37,7 @@ class User(db.Model):
     language = db.Column(db.String(5))
     cart = db.relationship('CartItem', lazy='dynamic', backref='user', cascade='all, delete-orphan')
     orders = db.relationship('Order', lazy='dynamic', backref='customer')
+    comments = db.relationship('Comment', lazy='dynamic', backref='author')
 
     def _get_cart_item_for_dish(self, dish) -> CartItem:
         """
@@ -160,6 +161,16 @@ class Order(db.Model):
         TERMINAL = 'terminal'
         CLICK = 'click'
         PAYME = 'payme'
+
+
+class Comment(db.Model):
+    """
+    Model for users' comments
+    """
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 class UserDish(db.Model):
