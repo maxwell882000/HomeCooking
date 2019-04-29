@@ -100,8 +100,8 @@ def from_order(order: Order, language: str, total: int) -> str:
             dish_name = dish.name
         order_item_str = order_item_tmpl.format(name=dish_name,
                                                 count=order_item.count,
-                                                price=dish.price,
-                                                sum=order_item.count * dish.price,
+                                                price=_format_number(dish.price),
+                                                sum=_format_number(order_item.count * dish.price),
                                                 sum_str=get_string('sum', language))
         order_content += order_item_str
     order_content += "<b>{}</b>: {} {}".format(get_string('cart.summary', language),
