@@ -51,7 +51,7 @@ def cart_action_processor(message: Message):
             return
 
 
-def cart_processor(message: Message):
+def cart_processor(message: Message, callback=None):
     chat_id = message.chat.id
     user_id = message.from_user.id
     language = userservice.get_user_language(user_id)
@@ -60,7 +60,10 @@ def cart_processor(message: Message):
     if len(cart) == 0:
         cart_empty_message = strings.get_string('cart.empty', language)
         bot.send_message(chat_id, cart_empty_message)
-        bot.register_next_step_handler_by_chat_id(chat_id, catalog_processor)
+        if callback:
+            bot.register_next_step_handler_by_chat_id(chat_id, callback)
+        else:
+            bot.register_next_step_handler_by_chat_id(chat_id, catalog_processor)
         return
     cart_help_message = strings.get_string('cart.help', language)
     total = _total_cart_sum(cart)

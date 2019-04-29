@@ -48,7 +48,7 @@ def dish_action_processor(message: Message):
         bot.send_message(chat_id, dish_message, reply_markup=dishes_keyboard)
         bot.register_next_step_handler_by_chat_id(chat_id, choose_dish_processor)
     elif strings.get_string('catalog.cart', language) in message.text:
-        cart.cart_processor(message)
+        cart.cart_processor(message, dish_action_processor)
     else:
         if not message.text.isdigit():
             error()
@@ -74,7 +74,7 @@ def choose_dish_processor(message: Message):
     if strings.get_string('go_back', language) in message.text:
         back_to_the_catalog(chat_id, language)
     elif strings.get_string('catalog.cart', language) in message.text:
-        cart.cart_processor(message)
+        cart.cart_processor(message, choose_dish_processor)
     else:
         dish_name = message.text
         dish = dishservice.get_dish_by_name(dish_name, language)
