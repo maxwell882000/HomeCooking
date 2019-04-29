@@ -40,7 +40,12 @@ def comments_processor(message: Message):
     if not message.text:
         error()
         return
-    commentservice.add_comment(user_id, message.text)
-    thanks_message = strings.get_string('comments.thanks', language)
-    main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-    bot.send_message(chat_id, thanks_message, reply_markup=main_menu_keyboard)
+    if strings.get_string('go_to_menu', language) in message.text:
+        main_menu_message = strings.get_string('main_menu.choose_option', language)
+        main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
+        bot.send_message(chat_id, main_menu_message, reply_markup=main_menu_keyboard)
+    else:
+        commentservice.add_comment(user_id, message.text)
+        thanks_message = strings.get_string('comments.thanks', language)
+        main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
+        bot.send_message(chat_id, thanks_message, reply_markup=main_menu_keyboard)
