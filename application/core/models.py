@@ -110,8 +110,8 @@ class Dish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     name_uz = db.Column(db.String(100))
-    image_id = db.Column(db.String)
-    image_path = db.Column(db.String)
+    image_id = db.Column(db.String(150))
+    image_path = db.Column(db.String(150))
     description = db.Column(db.String(500))
     description_uz = db.Column(db.String(500))
     price = db.Column(db.Integer)
@@ -169,7 +169,7 @@ class Comment(db.Model):
     """
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String)
+    text = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
