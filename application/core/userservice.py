@@ -7,15 +7,9 @@ def is_user_exists(user_id: int):
     return User.query.get(user_id) is not None
 
 
-def register_user(user_id: int, username: str):
-    user = User(id=user_id, username=username)
+def register_user(user_id: int, username: str, language: str):
+    user = User(id=user_id, username=username, language=language)
     db.session.add(user)
-    db.session.commit()
-
-
-def set_user_name(user_id: int, user_name: str):
-    user = User.query.get(user_id)
-    user.name = user_name
     db.session.commit()
 
 
@@ -28,12 +22,6 @@ def set_user_phone_number(user_id: int, phone_number: str):
 def set_user_language(user_id: int, language: str):
     user = User.query.get(user_id)
     user.language = language
-    db.session.commit()
-
-
-def set_user_company(user_id: int, company_name: str):
-    user = User.query.get(user_id)
-    user.company_name = company_name
     db.session.commit()
 
 
@@ -53,7 +41,7 @@ def is_user_registered(user_id):
     user = User.query.get(user_id)
     if user is None:
         return False
-    return user.name is not None and user.phone_number is not None
+    return user.language is not None
 
 
 def get_user_language(user_id: int):
