@@ -127,11 +127,12 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     shipping_method = db.Column(db.String(50))
     payment_method = db.Column(db.String(50))
-    address = db.Column(db.String(100))
+    address_txt = db.Column(db.String(100))
     confirmed = db.Column(db.Boolean, default=False)
     delivery_price = db.Column(db.Integer)
     order_items = db.relationship('OrderItem', lazy='dynamic',
                                   backref='order', cascade='all, delete-orphan')
+    location = db.relationship('Location', uselist=False, cascade='all,delete')
 
     def fill_from_user_cart(self, cart):
         """
@@ -160,6 +161,15 @@ class Order(db.Model):
         TERMINAL = 'terminal'
         CLICK = 'click'
         PAYME = 'payme'
+
+
+class Location(db.Model):
+    __tablename__ = 'locations'
+    id = db.Column(db.Integer, primary_key=True)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    address = db.Column(db.String(100))
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
 
 
 class Comment(db.Model):
