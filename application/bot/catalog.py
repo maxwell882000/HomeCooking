@@ -140,6 +140,10 @@ def catalog(message: Message):
     bot.send_chat_action(chat_id, 'typing')
     catalog_message = strings.get_string('catalog.start', language)
     categories = dishservice.get_all_categories()
+    if len(categories) == 0:
+        empty_message = strings.get_string('catalog.empty', language)
+        bot.send_message(chat_id, empty_message)
+        return
     category_keyboard = keyboards.from_dish_categories(categories, language)
     bot.send_message(chat_id, catalog_message, reply_markup=category_keyboard)
     bot.register_next_step_handler_by_chat_id(chat_id, catalog_processor)

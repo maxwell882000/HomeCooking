@@ -13,6 +13,7 @@
     "main_menu.choose_option": "Выберите пункт меню",
     "language.change": "Выберите язык ниже",
     "language.success": "Язык изменён ✅",
+    "catalog.empty": "Каталог пуст",
     "catalog.start": "Что вы хотите заказать?",
     "catalog.error": "Выберите категорию ниже",
     "catalog.cart": "\uD83D\uDED2 Корзина",
