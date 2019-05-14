@@ -169,3 +169,13 @@ def from_cart_items(cart_items, language) -> ReplyKeyboardMarkup:
     cart_items_keyboard.add(get_string('go_back', language), get_string('cart.clear', language))
     cart_items_keyboard.add(get_string('catalog.make_order', language))
     return cart_items_keyboard
+
+
+def from_change_language(current_language: str) -> ReplyKeyboardMarkup:
+    change_language_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
+    if current_language == 'uz':
+        change_language_keyboard.add(get_string('language.russian'))
+    else:
+        change_language_keyboard.add(get_string('language.uzbek'))
+    change_language_keyboard.add(get_string('go_back', current_language))
+    return change_language_keyboard
