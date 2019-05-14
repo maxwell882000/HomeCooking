@@ -1,11 +1,8 @@
 from application import telegram_bot as bot
 from application.core import commentservice, userservice
 from application.resources import strings, keyboards
+from application.utils import bot as botutils
 from telebot.types import Message
-
-
-def check_auth(message: Message):
-    return userservice.is_user_registered(message.from_user.id)
 
 
 def check_comments(message: Message):
@@ -15,7 +12,7 @@ def check_comments(message: Message):
 
 
 @bot.message_handler(commands=['/comment'])
-@bot.message_handler(content_types='text', func=lambda m: check_auth(m) and check_comments(m))
+@bot.message_handler(content_types='text', func=lambda m: botutils.check_auth(m) and check_comments(m))
 def comments(message: Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
@@ -41,11 +38,8 @@ def comments_processor(message: Message):
         error()
         return
     if strings.get_string('go_to_menu', language) in message.text:
-        main_menu_message = strings.get_string('main_menu.choose_option', language)
-        main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-        bot.send_message(chat_id, main_menu_message, reply_markup=main_menu_keyboard)
+        botutils.to_main_menu(chat_id, language)
     else:
         commentservice.add_comment(user_id, message.text)
         thanks_message = strings.get_string('comments.thanks', language)
-        main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-        bot.send_message(chat_id, thanks_message, reply_markup=main_menu_keyboard)
+        botutils.to_main_menu(chat_id, language, thanks_message)

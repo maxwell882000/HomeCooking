@@ -1,6 +1,7 @@
 from application import telegram_bot as bot
 from application.core import userservice, dishservice
 from application.resources import strings, keyboards
+from application.utils import bot as botutils
 from telebot.types import Message
 from application.core import exceptions
 
@@ -9,10 +10,6 @@ def check_catalog(message: Message):
     user_id = message.from_user.id
     language = userservice.get_user_language(user_id)
     return strings.get_string('main_menu.make_order', language) in message.text and 'private' in message.chat.type
-
-
-def check_auth(message: Message):
-    return userservice.is_user_registered(message.from_user.id)
 
 
 def back_to_the_catalog(chat_id, language, message_txt=None):
@@ -116,9 +113,7 @@ def catalog_processor(message: Message):
         error()
         return
     if strings.get_string('go_back', language) in message.text:
-        main_menu_message = strings.get_string('main_menu.choose_option', language)
-        main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-        bot.send_message(chat_id, main_menu_message, reply_markup=main_menu_keyboard)
+        botutils.to_main_menu(chat_id, language)
     elif strings.get_string('catalog.cart', language) in message.text:
         cart.cart_processor(message)
     elif strings.get_string('catalog.make_order', language) in message.text:
@@ -136,8 +131,8 @@ def catalog_processor(message: Message):
         bot.register_next_step_handler_by_chat_id(chat_id, choose_dish_processor)
 
 
-@bot.message_handler(commands=['order'], func=check_auth)
-@bot.message_handler(content_types=['text'], func=lambda m: check_auth(m) and check_catalog(m))
+@bot.message_handler(commands=['order'], func=botutils.check_auth)
+@bot.message_handler(content_types=['text'], func=lambda m: botutils.check_auth(m) and check_catalog(m))
 def catalog(message: Message):
     chat_id = message.chat.id
     user_id = message.from_user.id

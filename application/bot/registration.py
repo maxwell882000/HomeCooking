@@ -1,6 +1,7 @@
 from application import telegram_bot
 from application.core import userservice
 from application.resources import strings, keyboards
+from application.utils import bot as botutils
 from telebot.types import Message
 
 
@@ -28,8 +29,7 @@ def process_user_language(message: Message):
         return
     userservice.register_user(user_id, message.from_user.username, language)
     success_message = strings.get_string('welcome.registration_successfully', language)
-    main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-    telegram_bot.send_message(chat_id, success_message, reply_markup=main_menu_keyboard)
+    botutils.to_main_menu(chat_id, language, success_message)
 
 
 @telegram_bot.message_handler(commands=['start'], func=lambda m: m.chat.type == 'private')
