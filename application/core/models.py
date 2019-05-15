@@ -128,6 +128,7 @@ class Order(db.Model):
     shipping_method = db.Column(db.String(50))
     payment_method = db.Column(db.String(50))
     address_txt = db.Column(db.String(100))
+    phone_number = db.Column(db.String(15))
     confirmed = db.Column(db.Boolean, default=False)
     confirmation_date = db.Column(db.DateTime)
     delivery_price = db.Column(db.Integer)
