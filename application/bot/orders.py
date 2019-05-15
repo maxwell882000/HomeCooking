@@ -4,6 +4,7 @@ from application.resources import strings, keyboards
 from telebot.types import Message
 from .catalog import back_to_the_catalog
 from application.core.models import Order
+import re
 
 
 def _total_order_sum(order_items) -> int:
@@ -36,6 +37,13 @@ def _to_the_address(chat_id, language):
     address_keyboard = keyboards.get_keyboard('order.address', language)
     bot.send_message(chat_id, address_message, parse_mode='HTML', reply_markup=address_keyboard)
     bot.register_next_step_handler_by_chat_id(chat_id, address_processor)
+
+
+def _to_the_phone_number(chat_id, language, user):
+    phone_number_message = strings.get_string('order.phone_number', language)
+    phone_number_keyboard = keyboards.from_user_phone_number(language, user.phone_number)
+    bot.send_message(chat_id, phone_number_message, reply_markup=phone_number_keyboard, parse_mode='HTML')
+    bot.register_next_step_handler_by_chat_id(chat_id, phone_number_processor)
 
 
 def _to_the_confirmation(chat_id, current_order, language):
@@ -97,8 +105,8 @@ def payment_method_processor(message: Message):
         bot.send_message(chat_id, error_msg)
         bot.register_next_step_handler_by_chat_id(chat_id, payment_method_processor)
 
-    def confirm_order():
-        _to_the_confirmation(chat_id, current_order, language)
+    def phone_number():
+        _to_the_phone_number(chat_id, language, current_order.customer)
 
     if not message.text:
         error()
@@ -112,18 +120,44 @@ def payment_method_processor(message: Message):
             _to_the_address(chat_id, language)
     elif strings.from_order_payment_method(Order.PaymentMethods.CASH, language) in message.text:
         orderservice.set_payment_method(user_id, Order.PaymentMethods.CASH)
-        confirm_order()
+        phone_number()
     elif strings.from_order_payment_method(Order.PaymentMethods.CLICK, language) in message.text:
         orderservice.set_payment_method(user_id, Order.PaymentMethods.CLICK)
-        confirm_order()
+        phone_number()
     elif strings.from_order_payment_method(Order.PaymentMethods.PAYME, language) in message.text:
         orderservice.set_payment_method(user_id, Order.PaymentMethods.PAYME)
-        confirm_order()
+        phone_number()
     elif strings.from_order_payment_method(Order.PaymentMethods.TERMINAL, language) in message.text:
         orderservice.set_payment_method(user_id, Order.PaymentMethods.TERMINAL)
-        confirm_order()
+        phone_number()
     else:
         error()
+
+
+def phone_number_processor(message):
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    language = userservice.get_user_language(user_id)
+
+    def error():
+        error_msg = strings.get_string('order.phone_number', language)
+        bot.send_message(chat_id, error_msg, parse_mode='HTML')
+        bot.register_next_step_handler_by_chat_id(chat_id, phone_number_processor)
+
+    if message.contact is not None:
+        current_order = orderservice.set_phone_number(user_id, message.contact.phone_number)
+    else:
+        if message.text is None:
+            error()
+            return
+        else:
+            match = re.match(r'\+*998\s*\d{2}\s*\d{3}\s*\d{2}\s*\d{2}', message.text)
+            if match is None:
+                error()
+                return
+            phone_number = match.group()
+            current_order = orderservice.set_phone_number(user_id, phone_number)
+    _to_the_confirmation(chat_id, current_order, language)
 
 
 def address_processor(message: Message):
