@@ -76,20 +76,23 @@ def from_order_payment_method(value: str, language: str) -> str:
 
 
 def from_order(order: Order, language: str, total: int) -> str:
-    order_content = "<b>{}</b>:".format(get_string('your_order', language))
+    order_content = "<b>{}:</b>".format(get_string('your_order', language))
     order_content += '\n\n'
-    order_content += '{phone}: {phone_value}\n'.format(phone=get_string('phone', language),
-                                                       phone_value=order.customer.phone_number)
-    order_content += '{payment_type}: {payment_type_value}\n' \
+    order_content += '<b>{phone}:</b> {phone_value}\n'.format(phone=get_string('phone', language),
+                                                              phone_value=order.phone_number)
+    order_content += '<b>{payment_type}:</b> {payment_type_value}\n' \
         .format(payment_type=get_string('payment', language),
                 payment_type_value=from_order_payment_method(order.payment_method, language))
-    order_content += '{shipping_method}: {shipping_method_value}\n'.format(
+    order_content += '<b>{shipping_method}:</b> {shipping_method_value}\n'.format(
         shipping_method=get_string('shipping_method', language),
         shipping_method_value=from_order_shipping_method(order.shipping_method, language)
     )
-    if order.address:
-        order_content += '{address}: {address_value}'.format(address=get_string('address', language),
-                                                             address_value=order.address)
+    if order.address_txt:
+        order_content += '<b>{address}:</b> {address_value}'.format(address=get_string('address', language),
+                                                                    address_value=order.address_txt)
+    elif order.location:
+        order_content += '<b>{address}:</b> {address_value}'.format(address=get_string('address', language),
+                                                                    address_value=order.location.address)
     order_content += '\n\n'
     order_item_tmpl = '<b>{name}</b>\n{count} x {price} = {sum} {sum_str}\n'
     for order_item in order.order_items.all():

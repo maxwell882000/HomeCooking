@@ -40,6 +40,7 @@
     "order.payme": "\uD83D\uDCB3 Payme",
     "order.payment_error": "Quyidagi to'lov usulini tanlang",
     "order.delivery_price_helper": "*Yetkazib berish buyurtma summasiga kirmaydi.",
+    "order.phone_number": "Raqamni <b>+998 ** *** ** **</b> formatda ko`rsating yoki quyidagi variantlardan foydalaning",
     "order.confirm": "✅ Tasdiqlash",
     "order.cancel": "❌ Bekor Qilish",
     "order.confirmation_error": "Buyurtmani tasdiqlang",

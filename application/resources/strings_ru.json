@@ -42,6 +42,7 @@
     "order.payme": "\uD83D\uDCB3 Payme",
     "order.payment_error": "Выберите способ оплаты ниже",
     "order.delivery_price_helper": "*Сумма доставки не входит в итог заказа",
+    "order.phone_number": "Укажите номер в формате <b>+998 ** *** ** **</b> или воспользуйтесь вариантами ниже",
     "order.confirm": "✅ Подтверждаю",
     "order.cancel": "❌ Отмена",
     "order.confirmation_error": "Подтвердите свой заказ",
