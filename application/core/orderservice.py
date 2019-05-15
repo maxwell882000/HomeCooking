@@ -1,5 +1,6 @@
 from application import db
 from application.core.models import Order, User, Location
+from application.utils import geocode
 from . import userservice
 from datetime import datetime
 import geocoder
@@ -76,11 +77,11 @@ def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
     """
     latitude = map_location[0]
     longitude = map_location[1]
-    location = geocoder.yandex([latitude, longitude], method='reverse', lang='ru-RU')
-    if not location.json:
+    address = geocode.get_address_by_coordinates(map_location)
+    if not address:
         return False
     current_order = get_current_order_by_user(user_id)
-    order_location = Location(latitude=latitude, longitude=longitude, address=location.json.get('address'))
+    order_location = Location(latitude=latitude, longitude=longitude, address=address)
     current_order.location = order_location
     db.session.commit()
     return True
