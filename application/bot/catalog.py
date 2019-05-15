@@ -7,6 +7,8 @@ from application.core import exceptions
 
 
 def check_catalog(message: Message):
+    if not message.text:
+        return False
     user_id = message.from_user.id
     language = userservice.get_user_language(user_id)
     return strings.get_string('main_menu.make_order', language) in message.text and 'private' in message.chat.type
