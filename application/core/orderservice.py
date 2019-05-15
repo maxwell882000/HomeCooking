@@ -1,6 +1,7 @@
 from application import db
-from application.core.models import Order, User
+from application.core.models import Order, User, Location
 from . import userservice
+from datetime import datetime
 import geocoder
 
 
@@ -62,7 +63,7 @@ def set_address_by_string(user_id: int, address: str):
     :return: void
     """
     current_order = get_current_order_by_user(user_id)
-    current_order.address = address
+    current_order.address_txt = address
     db.session.commit()
 
 
@@ -79,7 +80,9 @@ def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
     if not location.json:
         return False
     current_order = get_current_order_by_user(user_id)
-    current_order.address = location.json.get('address')
+    order_location = Location(latitude=latitude, longitude=longitude, address=location.json.get('address'))
+    current_order.location = order_location
+    db.session.commit()
     return True
 
 
@@ -91,5 +94,6 @@ def confirm_order(user_id: int):
     """
     current_order = get_current_order_by_user(user_id)
     current_order.confirmed = True
+    current_order.confirmation_date = datetime.utcnow()
     userservice.clear_user_cart(user_id)
     db.session.commit()
