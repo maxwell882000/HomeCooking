@@ -3,7 +3,7 @@ import geocoder
 from typing import Optional, AnyStr
 
 
-def distance_between_two_points(first_coordinates: tuple, second_coordinates: tuple) -> int:
+def distance_between_two_points(first_coordinates: tuple, second_coordinates: tuple) -> tuple:
     """
     Calculate the great circle distance between two pints
     on the Earth (specified in decimal degrees)
@@ -24,11 +24,11 @@ def distance_between_two_points(first_coordinates: tuple, second_coordinates: tu
     km = 6371 * c
     # If distance in kilometres, round the value
     if km >= 1:
-        return round(km)
+        return round(km, 1), 'km'
     else:
         # If distance is smaller than 1, return metres value
         metres = km * 1000
-        return round(metres)
+        return round(metres), 'm'
 
 
 def get_address_by_coordinates(coordinates: tuple) -> Optional[AnyStr]:
