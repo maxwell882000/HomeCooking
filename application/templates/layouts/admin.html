@@ -54,7 +54,7 @@
                     <li class="header">НАВИГАЦИЯ</li>
                     <li class="{% if area == 'catalog' %}active{% endif %}"><a href="#"><i class="fa fas fa-stream"></i> <span>Каталог</span></a></li>
                     <li class="{% if area == 'orders' %}active{% endif %}"><a href="#"><i class="fa fas fa-clipboard-list"></i> <span>Заказы</span></a></li>
-                    <li class="{% if area == 'users' %}active{% endif %}"><a href="#"><i class="fa fas fa-users"></i> <span>Клиенты</span></a></li>
+                    <li class="{% if area == 'users' %}active{% endif %}"><a href="{{ url_for('admin.users') }}"><i class="fa fas fa-users"></i> <span>Клиенты</span></a></li>
                     <li class="{% if area == 'map' %}active{% endif %}"><a href="#"><i class="fa fas fa-map-marked-alt"></i> <span>Карта заказов</span></a></li>
                     <li class="{% if area == 'settings' %}active{% endif %}"><a href="#"><i class="fa fas fa-cogs"></i> <span>Настройки</span></a></li>
                     <li class="{% if area == 'admin' %}active{% endif %}"><a href="#"><i class="fa fas fa-user-cog"></i> <span>Администратор</span></a></li>
@@ -91,7 +91,7 @@
       Административная панель
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; {{ year }} <a href="#">Домашняя кухня</a>.</strong> Все права защищены.
+    <strong>Copyright &copy; {{ year }} Домашняя кухня.</strong> <small>Все права защищены.</small>
   </footer>
     </div>
 
