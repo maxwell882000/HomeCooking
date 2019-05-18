@@ -112,6 +112,8 @@ def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
             # Add 500 to compare if delivery price less or more the half integer value
             half_int_value = int_value + 500
             if delivery_price < half_int_value:
+                difference = half_int_value - delivery_price
+                delivery_price += (difference - 100)
                 delivery_price = round(delivery_price/1000 + 5/100, 1) * 1000
             elif delivery_price > half_int_value:
                 delivery_price = round(delivery_price / 1000) * 1000
