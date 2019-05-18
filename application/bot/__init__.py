@@ -29,6 +29,9 @@ if 'PRODUCTION' in os.environ:
 def empty_message(message: telebot.types.Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
+    if not userservice.is_user_registered(user_id):
+        registration.welcome(message)
+        return
     language = userservice.get_user_language(user_id)
     main_menu_message = strings.get_string('main_menu.choose_option', language)
     main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
