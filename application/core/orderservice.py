@@ -28,8 +28,11 @@ def make_an_order(user_id: int):
     else:
         current_order.fill_from_user_cart(user.cart.all())
         current_order.payment_method = None
-        current_order.address = None
+        current_order.address_txt = None
+        if current_order.location:
+            db.session.delete(current_order.location)
         current_order.shipping_method = None
+        current_order.delivery_price = None
     db.session.commit()
 
 
