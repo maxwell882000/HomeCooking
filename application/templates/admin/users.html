@@ -29,7 +29,7 @@
                         <tbody>
                             {% for user in users %}
                                 <tr>
-                                    <td>{{ loop.index }}</td>
+                                    <td>{{ loop.revindex }}</td>
                                     <td>
                                         {% if user.username %}
                                             {{ user.username }}
