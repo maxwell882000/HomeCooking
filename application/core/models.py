@@ -192,6 +192,12 @@ class UserDish(db.Model):
     dish_id = db.Column(db.Integer, index=True)
 
 
+class NotificationChat(db.Model):
+    __tablename__ = "notification_chats"
+    chat_id = db.Column(db.Integer, primary_key=True)
+    chat_title = db.Column(db.String(100))
+
+
 @login.user_loader
 def load_user(user_id):
     return UserAdmin.query.get(int(user_id))
