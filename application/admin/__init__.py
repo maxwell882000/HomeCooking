@@ -4,7 +4,7 @@ from datetime import datetime
 
 bp = Blueprint('admin', __name__)
 
-from application.admin import users
+from application.admin import users, orders
 
 
 @bp.context_processor
