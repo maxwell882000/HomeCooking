@@ -30,5 +30,7 @@ def notify_new_order(order: Order, total_sum: int):
     for chat in notification_chats:
         try:
             telegram_bot.send_message(chat.chat_id, notification_message, parse_mode='HTML')
+            if order.location:
+                telegram_bot.send_location(chat.chat_id, order.location.latitude, order.location.longitude)
         except ApiException:
             pass
