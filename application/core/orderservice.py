@@ -5,11 +5,20 @@ from . import userservice
 from datetime import datetime
 import settings
 from math import floor
+from typing import List
 
 
 def get_current_order_by_user(user_id: int) -> Order:
     user = User.query.get(user_id)
     return user.orders.filter(Order.confirmed != True).first()
+
+
+def get_all_confirmed_orders() -> List[Order]:
+    return Order.query.filter(Order.confirmed == True).order_by(Order.confirmation_date.desc()).all()
+
+
+def get_order_by_id(order_id) -> Order:
+    return Order.query.get_or_404(order_id)
 
 
 def make_an_order(user_id: int):
@@ -28,8 +37,11 @@ def make_an_order(user_id: int):
     else:
         current_order.fill_from_user_cart(user.cart.all())
         current_order.payment_method = None
-        current_order.address = None
+        current_order.address_txt = None
+        if current_order.location:
+            db.session.delete(current_order.location)
         current_order.shipping_method = None
+        current_order.delivery_price = None
     db.session.commit()
 
 
@@ -112,6 +124,8 @@ def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
             # Add 500 to compare if delivery price less or more the half integer value
             half_int_value = int_value + 500
             if delivery_price < half_int_value:
+                difference = half_int_value - delivery_price
+                delivery_price += (difference - 100)
                 delivery_price = round(delivery_price/1000 + 5/100, 1) * 1000
             elif delivery_price > half_int_value:
                 delivery_price = round(delivery_price / 1000) * 1000

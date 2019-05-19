@@ -1,6 +1,7 @@
 from application import db
 from application.core.models import User, UserAdmin, UserDish, Dish
 from . import dishservice
+from datetime import datetime
 
 
 def is_user_exists(user_id: int):
@@ -8,7 +9,7 @@ def is_user_exists(user_id: int):
 
 
 def register_user(user_id: int, username: str, language: str):
-    user = User(id=user_id, username=username, language=language)
+    user = User(id=user_id, username=username, language=language, registration_date=datetime.utcnow())
     db.session.add(user)
     db.session.commit()
 
@@ -59,7 +60,7 @@ def is_admin_user_exists(email):
 
 
 def get_all_bot_users():
-    return User.query.all()
+    return User.query.order_by(User.registration_date.desc()).all()
 
 
 def set_current_user_dish(user_id: int, dish_id: int):
