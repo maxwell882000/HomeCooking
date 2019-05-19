@@ -5,11 +5,20 @@ from . import userservice
 from datetime import datetime
 import settings
 from math import floor
+from typing import List
 
 
 def get_current_order_by_user(user_id: int) -> Order:
     user = User.query.get(user_id)
     return user.orders.filter(Order.confirmed != True).first()
+
+
+def get_all_confirmed_orders() -> List[Order]:
+    return Order.query.filter(Order.confirmed == True).order_by(Order.confirmation_date.desc()).all()
+
+
+def get_order_by_id(order_id) -> Order:
+    return Order.query.get_or_404(order_id)
 
 
 def make_an_order(user_id: int):
