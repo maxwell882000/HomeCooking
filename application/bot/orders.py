@@ -4,6 +4,7 @@ from application.resources import strings, keyboards
 from telebot.types import Message
 from .catalog import back_to_the_catalog
 from application.core.models import Order
+from .notifications import notify_new_order
 import re
 
 
@@ -204,9 +205,10 @@ def confirmation_processor(message: Message):
         error()
         return
     if strings.get_string('order.confirm', language) in message.text:
-        orderservice.confirm_order(user_id)
+        order = orderservice.confirm_order(user_id)
         order_success_message = strings.get_string('order.success', language)
         back_to_the_catalog(chat_id, language, order_success_message)
+        notify_new_order(order, _total_order_sum(order.order_items.all()))
     elif strings.get_string('order.cancel', language) in message.text:
         order_canceled_message = strings.get_string('order.canceled', language)
         back_to_the_catalog(chat_id, language, order_canceled_message)

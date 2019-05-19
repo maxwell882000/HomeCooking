@@ -118,3 +118,30 @@ def from_order(order: Order, language: str, total: int) -> str:
         order_content += '\n\n'
         order_content += '<i>{}</i>'.format(get_string('order.delivery_price_helper', language))
     return order_content
+
+
+def from_order_notification(order: Order, total_sum):
+    order_content = "<b>Новый заказ!</b>"
+    order_content += '\n\n'
+    order_content += '<b>Номер телефона:</b> {}\n'.format(order.phone_number)
+    order_content += '<b>Способ доставки:</b> {}\n'.format(from_order_shipping_method(order.shipping_method, 'ru'))
+    order_content += '<b>Способ оплаты:</b> {}\n'.format(from_order_payment_method(order.payment_method, 'ru'))
+    if order.address_txt:
+        order_content += '<b>Адрес:</b> {}'.format(order.address_txt)
+    elif order.location:
+        order_content += '<b>Адрес:</b> {}'.format(order.location.address)
+    order_content += '\n\n'
+    order_item_tmpl = '<b>{name}</b>\n{count} x {price} = {sum} сум\n'
+    for order_item in order.order_items.all():
+        dish = order_item.dish
+        dish_name = dish.name
+        order_item_str = order_item_tmpl.format(name=dish_name,
+                                                count=order_item.count,
+                                                price=_format_number(dish.price),
+                                                sum=_format_number(order_item.count * dish.price))
+        order_content += order_item_str
+    order_content += "<b>Общая стоимость заказа</b>: {} сум".format(_format_number(total_sum))
+    if order.delivery_price:
+        order_content += '\n\n'
+        order_content += '<b>Стоимость доставки</b>: {} сум'.format(_format_number(order.delivery_price))
+    return order_content

@@ -139,3 +139,4 @@ def confirm_order(user_id: int):
     current_order.confirmation_date = datetime.utcnow()
     userservice.clear_user_cart(user_id)
     db.session.commit()
+    return current_order
