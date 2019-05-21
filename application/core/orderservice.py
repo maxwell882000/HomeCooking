@@ -22,7 +22,8 @@ def get_order_by_id(order_id) -> Order:
 
 
 def get_all_order_locations() -> List[Location]:
-    return Location.query.all()
+    orders = get_all_confirmed_orders()
+    return [order.location for order in orders if order.location]
 
 
 def make_an_order(user_id: int):
