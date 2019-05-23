@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectField
+from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 from flask_wtf.file import FileAllowed
 from application.core.models import Dish, DishCategory
@@ -27,6 +27,7 @@ class DishForm(FlaskForm):
     image = FileField('Изображение',
                       validators=[FileAllowed(['png', 'jpg'],
                                               message='Разрешены только изображения форматов .jpg, .png')])
+    delete_image = BooleanField('Удалить изображение')
     submit = SubmitField('Сохранить')
 
     def fill_from_object(self, dish: Dish):

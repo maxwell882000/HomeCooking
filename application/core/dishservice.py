@@ -48,7 +48,7 @@ def create_dish(name_ru, name_uz, description_ru, description_uz, image, price, 
     return dish
 
 
-def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image, price, category_id):
+def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image, price, category_id, delete_image):
     dish = get_dish_by_id(dish_id)
     dish.name = name_ru
     dish.name_uz = name_uz
@@ -56,13 +56,18 @@ def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image
     dish.description_uz = description_uz
     dish.price = price
     dish.category_id = category_id
-    if image and image.filename != '':
+    if (image and image.filename != '') and not delete_image:
         if dish.image_path:
             files.remove_file(dish.image_path)
         file_path = os.path.join(Config.UPLOAD_DIRECTORY, secure_filename(image.filename))
         files.save_file(image, file_path)
         dish.image_id = None
         dish.image_path = file_path
+    if delete_image:
+        if dish.image_path:
+            files.remove_file(dish.image_path)
+        dish.image_path = None
+        dish.image_id = None
     db.session.commit()
 
 
@@ -92,10 +97,6 @@ def get_dish_by_name(name: str, language: str) -> Dish:
     else:
         dish = Dish.query.filter(Dish.name == name).first()
     return dish
-
-
-def get_dish_by_id(dish_id: int):
-    return Dish.query.get(dish_id)
 
 
 def set_dish_image_id(dish: Dish, image_id: str):

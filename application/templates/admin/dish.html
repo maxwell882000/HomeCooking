@@ -77,7 +77,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-md-6 col-sm-12">
                                 <div class="form-group {% if form.image.errors|length > 0 %}has-error{% endif %}">
                                     {{ form.image.label }}
                                     {{ form.image }}
@@ -85,6 +85,13 @@
                                     {% for error in form.image.errors %}
                                         <span class="help-block">{{ error }}</span>
                                     {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="checkbox">
+                                    <label>
+                                        {{ form.delete_image }} {{ form.delete_image.label.text }}
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -97,4 +104,7 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/dish.js') }}"></script>
 {% endblock %}
