@@ -24,10 +24,6 @@ def update_category(category_id: int, name_ru: str, name_uz:str):
     return category
 
 
-def category_exists(category_name: str) -> bool:
-    return DishCategory.query.filter(DishCategory.name == category_name or DishCategory.name_uz == category_name).count() > 0
-
-
 def create_category(name_ru: str, name_uz: str):
     category = DishCategory(name=name_ru, name_uz=name_uz)
     db.session.add(category)
@@ -36,6 +32,7 @@ def create_category(name_ru: str, name_uz: str):
 
 def remove_category(category_id: int):
     db.session.delete(DishCategory.query.get_or_404(category_id))
+    db.session.commit()
 
 
 def create_dish(name_ru, name_uz, description_ru, description_uz, image, price, category_id):
@@ -48,11 +45,7 @@ def create_dish(name_ru, name_uz, description_ru, description_uz, image, price, 
         dish.image_path = file_path
     db.session.add(dish)
     db.session.commit()
-
-
-def dish_exists(dish_name: str, category_id: int):
-    category = get_category_by_id(category_id)
-    return category.dishes.filter(Dish.name == dish_name or Dish.name_uz == dish_name).count() > 0
+    return dish
 
 
 def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image, price, category_id):
@@ -64,7 +57,8 @@ def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image
     dish.price = price
     dish.category_id = category_id
     if image and image.filename != '':
-        files.remove_file(dish.image_path)
+        if dish.image_path:
+            files.remove_file(dish.image_path)
         file_path = os.path.join(Config.UPLOAD_DIRECTORY, secure_filename(image.filename))
         files.save_file(image, file_path)
         dish.image_id = None
@@ -74,6 +68,7 @@ def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image
 
 def remove_dish(dish_id: int):
     db.session.delete(Dish.query.get_or_404(dish_id))
+    db.session.commit()
 
 
 def get_dish_by_id(dish_id: int):
