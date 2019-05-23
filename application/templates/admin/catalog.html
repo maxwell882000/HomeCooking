@@ -4,6 +4,16 @@
 	<li class="active">Каталог</li>
 {% endblock %}
 {% block content %}
+    <div class="row add-button">
+        <div class="col-xs-4">
+            <a href="{{ url_for('admin.create_category') }}" class="btn btn-flat bg-orange"><i class="fas fa-plus"></i>Добавить категорию</a>
+        </div>
+    </div>
+    <div class="row add-button">
+        <div class="col-xs-4">
+            <a href="{{ url_for('admin.create_dish') }}" class="btn btn-flat bg-orange"><i class="fas fa-plus"></i>Добавить блюдо</a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
