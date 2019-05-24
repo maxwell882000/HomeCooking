@@ -79,6 +79,22 @@
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts-wrapper">
+                    {% for category, message in messages %}
+                        {% set is_error = category == 'error' %}
+                        {% set is_warning = category == 'warning' %}
+                        {% set is_success = category == 'success' %}
+                        <div class="alert alert-{% if is_error %}danger{% elif is_warning %}warning{% elif is_success %}success{% else %}info{% endif %} alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fas fa-{% if is_error %}ban{% elif is_warning %}exclamation-triangle{% elif is_success %}check{% else %}info{% endif %}"></i> Сообщение!</h4>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         {% block content %}
         {% endblock %}
     </section>

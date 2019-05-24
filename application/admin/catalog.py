@@ -20,7 +20,7 @@ def category(category_id: int):
         name_ru = form.name_ru.data
         name_uz = form.name_uz.data
         dishservice.update_category(category_id, name_ru, name_uz)
-        flash('Категория {} | {} изменена'.format(name_ru, name_uz))
+        flash('Категория {} | {} изменена'.format(name_ru, name_uz), category='success')
         return redirect(url_for('admin.catalog'))
     category = dishservice.get_category_by_id(category_id)
     form.fill_from_object(category)
@@ -37,7 +37,7 @@ def create_category():
         name_ru = form.name_ru.data
         name_uz = form.name_uz.data
         dishservice.create_category(name_ru, name_uz)
-        flash('Категория {} | {} добавлена'.format(name_ru, name_uz))
+        flash('Категория {} | {} добавлена'.format(name_ru, name_uz), category='success')
         return redirect(url_for('admin.catalog'))
     return render_template('admin/new_category.html', title='Добавить категорию', area='catalog', form=form)
 
@@ -46,6 +46,7 @@ def create_category():
 @bp.route('/catalog/<int:category_id>/remove', methods=['GET'])
 def remove_category(category_id: int):
     dishservice.remove_category(category_id)
+    flash('Категория удалена', category='success')
     return redirect(url_for('admin.catalog'))
 
 
@@ -100,4 +101,5 @@ def dish(dish_id: int):
 @bp.route('/catalog/dish/<int:dish_id>/remove', methods=['GET'])
 def remove_dish(dish_id: int):
     dishservice.remove_dish(dish_id)
+    flash('Блюдо удалено', category='success')
     return redirect(url_for('admin.catalog'))
