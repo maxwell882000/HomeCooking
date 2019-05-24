@@ -86,7 +86,7 @@ def choose_dish_processor(message: Message):
         if dish.image_id or dish.image_path:
             if dish.image_path and not dish.image_id:
                 try:
-                    image = open(dish.image_path, 'r')
+                    image = open(dish.image_path, 'rb')
                 except FileNotFoundError:
                     bot.send_message(chat_id, dish_info, reply_markup=dish_keyboard)
                 else:

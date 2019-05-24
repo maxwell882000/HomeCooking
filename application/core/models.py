@@ -135,7 +135,7 @@ class Order(db.Model):
     delivery_price = db.Column(db.Integer)
     order_items = db.relationship('OrderItem', lazy='dynamic',
                                   backref='order', cascade='all, delete-orphan')
-    location = db.relationship('Location', uselist=False, cascade='all,delete')
+    location = db.relationship('Location', uselist=False, cascade='all,delete', backref='order')
 
     def fill_from_user_cart(self, cart):
         """

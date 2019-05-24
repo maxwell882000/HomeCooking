@@ -55,6 +55,11 @@ def set_user_admin_password(user: UserAdmin, password: str):
     db.session.commit()
 
 
+def set_user_admin_email(user: UserAdmin, email: str):
+    user.email = email
+    db.session.commit()
+
+
 def is_admin_user_exists(email):
     return get_admin_user_by_email(email) is not None
 

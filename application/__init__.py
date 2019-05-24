@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -18,8 +19,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'auth.login'
-login.login_message = 'Для входа в систему необходима регистрация.'
-login.login_message_category = 'error'
+login.login_message = 'Для входа в систему необходима авторизация.'
+login.login_message_category = 'warning'
 
 import application.core.models as models
 

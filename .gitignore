@@ -127,3 +127,6 @@ settings
 
 # Frontend builds
 frontend/
+
+# Data files
+data/

@@ -21,6 +21,11 @@ def get_order_by_id(order_id) -> Order:
     return Order.query.get_or_404(order_id)
 
 
+def get_all_order_locations() -> List[Location]:
+    orders = get_all_confirmed_orders()
+    return [order.location for order in orders if order.location]
+
+
 def make_an_order(user_id: int):
     """
     Make a new empty order if doesn't exist in user's orders

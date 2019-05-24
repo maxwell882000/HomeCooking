@@ -5,9 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#f39c12">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/solid.css" integrity="sha384-ioUrHig76ITq4aEJ67dHzTvqjsAP/7IzgwE7lgJcg2r7BRNGYSK0LwSmROzYtgzs" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/fontawesome.css" integrity="sha384-sri+NftO+0hcisDKgr287Y/1LVnInHJ1l+XC7+FOabmTTIK0HnE2ID+xxvJ21c5J" crossorigin="anonymous">
+    {% block styles %}{% endblock %}
     <!-- AdminLTE styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/AdminLTE.min.css') }}">
     <!-- AdminLTE skin styles -->
@@ -52,12 +54,12 @@
                 <!-- Sidebar menu -->
                 <ul class="sidebar-menu">
                     <li class="header">НАВИГАЦИЯ</li>
-                    <li class="{% if area == 'catalog' %}active{% endif %}"><a href="#"><i class="fa fas fa-stream"></i> <span>Каталог</span></a></li>
+                    <li class="{% if area == 'catalog' %}active{% endif %}"><a href="{{ url_for('admin.catalog') }}"><i class="fa fas fa-stream"></i> <span>Каталог</span></a></li>
                     <li class="{% if area == 'orders' %}active{% endif %}"><a href="{{ url_for('admin.orders') }}"><i class="fa fas fa-clipboard-list"></i> <span>Заказы</span></a></li>
                     <li class="{% if area == 'users' %}active{% endif %}"><a href="{{ url_for('admin.users') }}"><i class="fa fas fa-users"></i> <span>Клиенты</span></a></li>
-                    <li class="{% if area == 'map' %}active{% endif %}"><a href="#"><i class="fa fas fa-map-marked-alt"></i> <span>Карта заказов</span></a></li>
+                    <li class="{% if area == 'map' %}active{% endif %}"><a href="{{ url_for('admin.orders_map') }}"><i class="fa fas fa-map-marked-alt"></i> <span>Карта заказов</span></a></li>
                     <li class="{% if area == 'settings' %}active{% endif %}"><a href="#"><i class="fa fas fa-cogs"></i> <span>Настройки</span></a></li>
-                    <li class="{% if area == 'admin' %}active{% endif %}"><a href="#"><i class="fa fas fa-user-cog"></i> <span>Администратор</span></a></li>
+                    <li class="{% if area == 'admin' %}active{% endif %}"><a href="{{ url_for('admin.administrator') }}"><i class="fa fas fa-user-cog"></i> <span>Администратор</span></a></li>
                 </ul>
             </section>
         </aside>
@@ -77,6 +79,22 @@
     </section>
     <!-- Main content -->
     <section class="content container-fluid">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts-wrapper">
+                    {% for category, message in messages %}
+                        {% set is_error = category == 'error' %}
+                        {% set is_warning = category == 'warning' %}
+                        {% set is_success = category == 'success' %}
+                        <div class="alert alert-{% if is_error %}danger{% elif is_warning %}warning{% elif is_success %}success{% else %}info{% endif %} alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fas fa-{% if is_error %}ban{% elif is_warning %}exclamation-triangle{% elif is_success %}check{% else %}info{% endif %}"></i> Сообщение!</h4>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         {% block content %}
         {% endblock %}
     </section>
