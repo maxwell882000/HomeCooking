@@ -87,13 +87,15 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ form.delete_image }} {{ form.delete_image.label.text }}
-                                    </label>
+                            {% if dish.image_path %}
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form.delete_image }} {{ form.delete_image.label.text }}
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                         <div class="form-buttons">
                             <a href="{{ url_for('admin.catalog') }}" class="back-button btn btn-flat bg-orange"><i class="fas fa-long-arrow-alt-left"></i>Назад</a>
