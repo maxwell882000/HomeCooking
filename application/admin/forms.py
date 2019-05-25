@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectField, BooleanField, PasswordField
+from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectField, BooleanField, \
+    PasswordField, FloatField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_wtf.file import FileAllowed
 from application.core.models import Dish, DishCategory
+import settings
 from flask_login import current_user
 
 
@@ -71,3 +73,27 @@ class AdministratorPasswordForm(FlaskForm):
     def validate_password(self, field):
         if not current_user.check_password(field.data):
             raise ValidationError('Указан неверный пароль')
+
+
+class DeliveryPriceForm(FlaskForm):
+    first_3_km = StringField('Стоимость за первые три киллометра',
+                             validators=[DataRequired('Укажите стоимость первых трёх километров')])
+    others_km = StringField('Стоимость за остальной путь',
+                            validators=[DataRequired('Укажите стоимость за остальные километры')])
+    submit = SubmitField('Сохранить')
+
+    def fill_from_settings(self):
+        delivery_cost = settings.get_delivery_cost()
+        self.first_3_km.data = delivery_cost[0]
+        self.others_km.data = delivery_cost[1]
+
+
+class CafeLocationForm(FlaskForm):
+    latitude = FloatField('Широта', validators=[DataRequired("Укажите широту")])
+    longitude = FloatField('Долгота', validators=[DataRequired('Укажите долготу')])
+    submit = SubmitField('Сохранить')
+
+    def fill_from_settings(self):
+        coordinates = settings.get_cafe_coordinates()
+        self.latitude.data = coordinates[0]
+        self.longitude.data = coordinates[1]
