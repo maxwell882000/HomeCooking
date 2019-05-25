@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 4d75a25a530b
+Revision ID: dbfab7289d6a
 Revises: 
-Create Date: 2019-05-15 02:31:27.638309
+Create Date: 2019-05-25 11:05:46.030429
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4d75a25a530b'
+revision = 'dbfab7289d6a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,6 +23,11 @@ def upgrade():
     sa.Column('name', sa.String(length=100), nullable=True),
     sa.Column('name_uz', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('notification_chats',
+    sa.Column('chat_id', sa.Integer(), nullable=False),
+    sa.Column('chat_title', sa.String(length=100), nullable=True),
+    sa.PrimaryKeyConstraint('chat_id')
     )
     op.create_table('user_admins',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -43,13 +48,14 @@ def upgrade():
     sa.Column('username', sa.String(length=100), nullable=True),
     sa.Column('phone_number', sa.String(length=15), nullable=True),
     sa.Column('language', sa.String(length=5), nullable=True),
+    sa.Column('registration_date', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('text', sa.String(length=100), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('dishes',
@@ -71,18 +77,20 @@ def upgrade():
     sa.Column('shipping_method', sa.String(length=50), nullable=True),
     sa.Column('payment_method', sa.String(length=50), nullable=True),
     sa.Column('address_txt', sa.String(length=100), nullable=True),
+    sa.Column('phone_number', sa.String(length=15), nullable=True),
     sa.Column('confirmed', sa.Boolean(), nullable=True),
+    sa.Column('confirmation_date', sa.DateTime(), nullable=True),
     sa.Column('delivery_price', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('cart_items',
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('dish_id', sa.Integer(), nullable=False),
+    sa.Column('dish_id', sa.Integer(), nullable=True),
     sa.Column('count', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['dish_id'], ['dishes.id'], ),
+    sa.ForeignKeyConstraint(['dish_id'], ['dishes.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('user_id', 'dish_id')
+    sa.PrimaryKeyConstraint('user_id')
     )
     op.create_table('locations',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -95,11 +103,11 @@ def upgrade():
     )
     op.create_table('order_items',
     sa.Column('order_id', sa.Integer(), nullable=False),
-    sa.Column('dish_id', sa.Integer(), nullable=False),
+    sa.Column('dish_id', sa.Integer(), nullable=True),
     sa.Column('count', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['dish_id'], ['dishes.id'], ),
+    sa.ForeignKeyConstraint(['dish_id'], ['dishes.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ),
-    sa.PrimaryKeyConstraint('order_id', 'dish_id')
+    sa.PrimaryKeyConstraint('order_id')
     )
     # ### end Alembic commands ###
 
@@ -118,5 +126,6 @@ def downgrade():
     op.drop_table('user_dish')
     op.drop_index(op.f('ix_user_admins_email'), table_name='user_admins')
     op.drop_table('user_admins')
+    op.drop_table('notification_chats')
     op.drop_table('dish_categories')
     # ### end Alembic commands ###
