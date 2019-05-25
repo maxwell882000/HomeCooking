@@ -9,7 +9,7 @@ class CartItem(db.Model):
     """
     __tablename__ = 'cart_items'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'), primary_key=True)
+    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id', ondelete='SET NULL'), nullable=True)
     count = db.Column(db.Integer)
     dish = db.relationship('Dish')
 
@@ -20,7 +20,7 @@ class OrderItem(db.Model):
     """
     __tablename__ = 'order_items'
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
-    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id'), primary_key=True)
+    dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id', ondelete='SET NULL'), nullable=True)
     count = db.Column(db.Integer)
     dish = db.relationship('Dish')
 
@@ -36,7 +36,7 @@ class User(db.Model):
     language = db.Column(db.String(5))
     registration_date = db.Column(db.DateTime)
     cart = db.relationship('CartItem', lazy='dynamic', backref='user', cascade='all, delete-orphan')
-    orders = db.relationship('Order', lazy='dynamic', backref='customer')
+    orders = db.relationship('Order', lazy='dynamic', backref='customer', cascade='all, delete-orphan')
     comments = db.relationship('Comment', lazy='dynamic', backref='author')
 
     def _get_cart_item_for_dish(self, dish) -> CartItem:
@@ -182,7 +182,7 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'))
 
 
 class UserDish(db.Model):
