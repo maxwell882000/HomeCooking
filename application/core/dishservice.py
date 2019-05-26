@@ -8,8 +8,11 @@ from config import Config
 from werkzeug.utils import secure_filename
 
 
-def get_all_categories() -> List[DishCategory]:
-    return DishCategory.query.all()
+def get_all_categories(sort_by_number: bool = False) -> List[DishCategory]:
+    if sort_by_number:
+        return DishCategory.query.order_by(DishCategory.number.asc()).all()
+    else:
+        return DishCategory.query.all()
 
 
 def get_category_by_id(category_id) -> DishCategory:
@@ -80,15 +83,24 @@ def get_dish_by_id(dish_id: int):
     return Dish.query.get_or_404(dish_id)
 
 
-def get_dishes_by_category_name(name: str, language: str) -> list:
+def get_dishes_by_category_name(name: str, language: str, sort_by_number: bool = False) -> list:
     if language == 'uz':
         dish_category = DishCategory.query.filter(DishCategory.name_uz == name).first()
     else:
         dish_category = DishCategory.query.filter(DishCategory.name == name).first()
     if dish_category:
+        if sort_by_number:
+            return dish_category.dishes.order_by(Dish.number.asc()).all()
         return dish_category.dishes.all()
     else:
         raise exceptions.CategoryNotFoundError()
+
+
+def get_dishes_from_category(category: DishCategory, sort_by_number: bool = False) -> List[Dish]:
+    if sort_by_number:
+        return category.dishes.order_by(Dish.number.asc()).all()
+    else:
+        return category.dishes.all()
 
 
 def get_dish_by_name(name: str, language: str) -> Dish:

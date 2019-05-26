@@ -20,7 +20,7 @@ def back_to_the_catalog(chat_id, language, message_txt=None):
         catalog_message = strings.get_string('catalog.start', language)
     else:
         catalog_message = message_txt
-    categories = dishservice.get_all_categories()
+    categories = dishservice.get_all_categories(sort_by_number=True)
     category_keyboard = keyboards.from_dish_categories(categories, language)
     bot.send_message(chat_id, catalog_message, reply_markup=category_keyboard)
     bot.register_next_step_handler_by_chat_id(chat_id, catalog_processor)
@@ -41,7 +41,7 @@ def dish_action_processor(message: Message):
         return
     current_dish = userservice.get_current_user_dish(user_id)
     if strings.get_string('go_back', language) in message.text:
-        dishes = current_dish.category.dishes.all()
+        dishes = dishservice.get_dishes_from_category(current_dish.category, sort_by_number=True)
         dish_message = strings.get_string('catalog.choose_dish', language)
         dishes_keyboard = keyboards.from_dishes(dishes, language)
         bot.send_message(chat_id, dish_message, reply_markup=dishes_keyboard)
@@ -123,7 +123,7 @@ def catalog_processor(message: Message):
     else:
         try:
             category_name = message.text
-            dishes = dishservice.get_dishes_by_category_name(category_name, language)
+            dishes = dishservice.get_dishes_by_category_name(category_name, language, sort_by_number=True)
         except exceptions.CategoryNotFoundError:
             error()
             return
@@ -141,7 +141,7 @@ def catalog(message: Message):
     language = userservice.get_user_language(user_id)
     bot.send_chat_action(chat_id, 'typing')
     catalog_message = strings.get_string('catalog.start', language)
-    categories = dishservice.get_all_categories()
+    categories = dishservice.get_all_categories(sort_by_number=True)
     if len(categories) == 0:
         empty_message = strings.get_string('catalog.empty', language)
         bot.send_message(chat_id, empty_message)
