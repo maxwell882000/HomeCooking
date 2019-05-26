@@ -79,6 +79,18 @@ def remove_dish(dish_id: int):
     db.session.commit()
 
 
+def set_dish_number(dish_id, number):
+    dish = get_dish_by_id(dish_id)
+    dish.number = number
+    db.session.commit()
+
+
+def set_category_number(category_id, number):
+    category = get_category_by_id(category_id)
+    category.number = number
+    db.session.commit()
+
+
 def get_dish_by_id(dish_id: int):
     return Dish.query.get_or_404(dish_id)
 

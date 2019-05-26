@@ -1,6 +1,6 @@
 from application.admin import bp
 from flask_login import login_required
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from application.core import dishservice
 from application.admin.forms import CategoryForm, DishForm
 
@@ -103,3 +103,19 @@ def remove_dish(dish_id: int):
     dishservice.remove_dish(dish_id)
     flash('Блюдо удалено', category='success')
     return redirect(url_for('admin.catalog'))
+
+
+@login_required
+@bp.route('/catalog/dish/<int:dish_id>/number', methods=['POST'])
+def set_dish_number(dish_id: int):
+    number = request.get_json()['number']
+    dishservice.set_dish_number(dish_id, number)
+    return '', 201
+
+
+@login_required
+@bp.route('/catalog/<int:category_id>/number', methods=['POST'])
+def set_category_number(category_id: int):
+    number = request.get_json()['number']
+    dishservice.set_category_number(category_id, number)
+    return '', 201

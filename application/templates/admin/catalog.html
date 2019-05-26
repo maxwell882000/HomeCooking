@@ -32,9 +32,10 @@
                         </thead>
                         <tbody>
                             {% for category in categories %}
-                                {% set category_index = loop.index %}
                                 <tr>
-                                    <td>{{ category_index }}</td>
+                                    <td>
+                                        <input type="number" class="number-counter" min="1" value="{{ category.number }}" data-api-url="{{ url_for('admin.set_category_number', category_id=category.id) }}">
+                                    </td>
                                     <td>{{ category.name }} | {{ category.name_uz }}</td>
                                     <td></td>
                                     <td>
@@ -45,7 +46,7 @@
                                 {% for dish in category.dishes.all() %}
                                     <tr>
                                         <td>
-                                            {{ category_index }}.{{ loop.index }}
+                                            <input type="number" class="number-counter" min="1" value="{{ dish.number }}" data-api-url="{{ url_for('admin.set_dish_number', dish_id=dish.id) }}">
                                         </td>
                                         <td></td>
                                         <td>{{ dish.name }} | {{ dish.name_uz }}</td>
@@ -62,4 +63,10 @@
             </div>
         </div>
     </div>
+    <div id="snackbar">
+
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/catalog.js') }}"></script>
 {% endblock %}
