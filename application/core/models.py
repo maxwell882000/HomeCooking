@@ -8,7 +8,8 @@ class CartItem(db.Model):
     Model for cart item
     """
     __tablename__ = 'cart_items'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id', ondelete='SET NULL'), nullable=True)
     count = db.Column(db.Integer)
     dish = db.relationship('Dish')
@@ -19,7 +20,8 @@ class OrderItem(db.Model):
     Model for order item
     """
     __tablename__ = 'order_items'
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'))
     dish_id = db.Column(db.Integer, db.ForeignKey('dishes.id', ondelete='SET NULL'), nullable=True)
     count = db.Column(db.Integer)
     dish = db.relationship('Dish')

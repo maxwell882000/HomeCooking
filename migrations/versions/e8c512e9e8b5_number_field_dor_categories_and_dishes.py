@@ -1,9 +1,7 @@
 """Number field dor categories and dishes
-
 Revision ID: e8c512e9e8b5
 Revises: dbfab7289d6a
 Create Date: 2019-05-26 18:32:11.184623
-
 """
 from alembic import op
 import sqlalchemy as sa
