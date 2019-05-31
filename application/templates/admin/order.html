@@ -19,6 +19,7 @@
                     {% if order.address_txt or order.location %}
                         <p>Адрес доставки: <strong>{% if order.address_txt %}{{ order.address_txt }}{% elif order.location %}{{ order.location.address }}{% endif %}</strong></p>
                     {% endif %}
+                    <p>Номер телефона: <strong>{{ order.phone_number }}</strong></p>
                     <p>Способ оплаты: <strong>{{ order.payment_method|payment_method }}</strong></p>
                 </div>
                 <div class="box-body table-responsive">
