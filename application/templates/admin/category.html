@@ -2,6 +2,7 @@
 {% block header %}{{ category.name }} | {{ category.name_uz }}{% endblock %}
 {% block description %}Редактрировать{% endblock %}
 {% block breadcrumbs %}
+    <li><a href="{{ url_for('admin.catalog') }}">Каталог</a></li>
     <li class="active">{{ category.name }} | {{ category.name_uz }}</li>
 {% endblock %}
 {% block content %}
