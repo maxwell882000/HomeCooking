@@ -110,10 +110,13 @@ def from_order(order: Order, language: str, total: int) -> str:
     order_content += "<b>{}</b>: {} {}".format(get_string('cart.summary', language),
                                                _format_number(total),
                                                get_string('sum', language))
+    if not order.delivery_price and order.address_txt:
+        order_content += '\n\n'
+        order_content += '<i>{}</i>'.format(get_string('delivery_price_without_location', language))
     if order.delivery_price:
         order_content += '\n\n'
         order_content += '<i>{}</i>: {} {}'.format(get_string('delivery_price', language),
-                                                   order.delivery_price,
+                                                   _format_number(order.delivery_price),
                                                    get_string('sum', language))
         order_content += '\n\n'
         order_content += '<i>{}</i>'.format(get_string('order.delivery_price_helper', language))
