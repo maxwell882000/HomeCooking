@@ -5,8 +5,8 @@ from application.core import dishservice
 from application.admin.forms import CategoryForm, DishForm
 
 
-@login_required
 @bp.route('/catalog', methods=['GET'])
+@login_required
 def catalog():
     categories = dishservice.get_all_categories()
     return render_template('admin/catalog.html', title='Каталог', area='catalog', categories=categories)

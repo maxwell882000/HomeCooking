@@ -17,6 +17,7 @@
                             <tr>
                                 <th>№</th>
                                 <th>Дата заказа</th>
+                                <th>Номер телефона</th>
                                 <th>Способ доставки</th>
                                 <th>Способ оплаты</th>
                                 <th>Действия</th>
@@ -27,6 +28,7 @@
                                 <tr>
                                     <td>{{ loop.revindex }}</td>
                                     <td>{{ order.confirmation_date|datetime(convert_from_utc=True) }}</td>
+                                    <td>{{ order.phone_number }}</td>
                                     <td>{{ order.shipping_method|shipping_method }}</td>
                                     <td>{{ order.payment_method|payment_method }}</td>
                                     <td>
