@@ -122,12 +122,6 @@ def payment_method_processor(message: Message):
     elif strings.from_order_payment_method(Order.PaymentMethods.CASH, language) in message.text:
         orderservice.set_payment_method(user_id, Order.PaymentMethods.CASH)
         phone_number()
-    elif strings.from_order_payment_method(Order.PaymentMethods.CLICK, language) in message.text:
-        orderservice.set_payment_method(user_id, Order.PaymentMethods.CLICK)
-        phone_number()
-    elif strings.from_order_payment_method(Order.PaymentMethods.PAYME, language) in message.text:
-        orderservice.set_payment_method(user_id, Order.PaymentMethods.PAYME)
-        phone_number()
     elif strings.from_order_payment_method(Order.PaymentMethods.TERMINAL, language) in message.text:
         orderservice.set_payment_method(user_id, Order.PaymentMethods.TERMINAL)
         phone_number()

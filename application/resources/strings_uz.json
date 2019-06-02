@@ -36,8 +36,6 @@
     "order.payment_pickup": "Buyurtmangiz uchun <b>to’lov turini</b> tanlang",
     "order.cash": "\uD83D\uDCB5 Naqd pul",
     "order.terminal": "\uD83D\uDCB3 Terminal",
-    "order.click": "\uD83D\uDCB3 Click",
-    "order.payme": "\uD83D\uDCB3 Payme",
     "order.payment_error": "Quyidagi to'lov usulini tanlang",
     "order.delivery_price_helper": "*Yetkazib berish buyurtma summasiga kirmaydi.",
     "order.phone_number": "Raqamni <b>+998 ** *** ** **</b> formatda ko`rsating yoki quyidagi variantlardan foydalaning",

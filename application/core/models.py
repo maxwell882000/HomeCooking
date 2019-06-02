@@ -166,8 +166,6 @@ class Order(db.Model):
     class PaymentMethods:
         CASH = 'cash'
         TERMINAL = 'terminal'
-        CLICK = 'click'
-        PAYME = 'payme'
 
 
 class Location(db.Model):

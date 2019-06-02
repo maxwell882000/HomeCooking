@@ -38,8 +38,6 @@
     "order.payment_pickup": "Выберите <b>способ оплаты</b> за Ваш заказ",
     "order.cash": "\uD83D\uDCB5 Наличные",
     "order.terminal": "\uD83D\uDCB3 Терминал",
-    "order.click": "\uD83D\uDCB3 Click",
-    "order.payme": "\uD83D\uDCB3 Payme",
     "order.payment_error": "Выберите способ оплаты ниже",
     "order.delivery_price_helper": "*Сумма доставки не входит в итог заказа",
     "order.phone_number": "Укажите номер в формате <b>+998 ** *** ** **</b> или воспользуйтесь вариантами ниже",
