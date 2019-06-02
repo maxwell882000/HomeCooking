@@ -1,7 +1,8 @@
 from application import db
 from application.core.models import User, UserAdmin, UserDish, Dish
+from application.utils import date
 from . import dishservice
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def is_user_exists(user_id: int):
@@ -66,6 +67,18 @@ def is_admin_user_exists(email):
 
 def get_all_bot_users():
     return User.query.order_by(User.registration_date.desc()).all()
+
+
+def get_bot_users_yesterday_today_statistic():
+    all_users = get_all_bot_users()
+    yesterday = date.convert_utc_to_asia_tz(datetime.utcnow() - timedelta(days=1))
+    yesterday_start = datetime(yesterday.year, yesterday.month, yesterday.day, tzinfo=yesterday.tzinfo)
+    yesterday_end = datetime(yesterday.year, yesterday.month, yesterday.day, 23, 59, 59, tzinfo=yesterday.tzinfo)
+    yesterday_bot_users_count = len([u for u in all_users if yesterday_start <= date.convert_utc_to_asia_tz(u.registration_date) <= yesterday_end])
+    today = date.convert_utc_to_asia_tz(datetime.utcnow())
+    today_start = datetime(today.year, today.month, today.day, tzinfo=today.tzinfo)
+    today_bot_users_count = len([u for u in all_users if today_start <= date.convert_utc_to_asia_tz(u.registration_date) <= today])
+    return yesterday_bot_users_count, today_bot_users_count
 
 
 def set_current_user_dish(user_id: int, dish_id: int):

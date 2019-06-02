@@ -1,8 +1,8 @@
 from application import db
 from application.core.models import Order, User, Location
-from application.utils import geocode
+from application.utils import geocode, date
 from . import userservice
-from datetime import datetime
+from datetime import datetime, timedelta
 import settings
 from math import floor
 from typing import List
@@ -11,6 +11,18 @@ from typing import List
 def get_current_order_by_user(user_id: int) -> Order:
     user = User.query.get(user_id)
     return user.orders.filter(Order.confirmed != True).first()
+
+
+def get_order_yesterday_today_statistic():
+    all_orders = Order.query.all()
+    yesterday = date.convert_utc_to_asia_tz(datetime.utcnow() - timedelta(days=1))
+    yesterday_start = datetime(yesterday.year, yesterday.month, yesterday.day, tzinfo=yesterday.tzinfo)
+    yesterday_end = datetime(yesterday.year, yesterday.month, yesterday.day, 23, 59, 59, tzinfo=yesterday.tzinfo)
+    today = date.convert_utc_to_asia_tz(datetime.utcnow())
+    today_start = datetime(today.year, today.month, today.day, tzinfo=today.tzinfo)
+    yesterday_orders_count = len([o for o in all_orders if yesterday_start <= date.convert_utc_to_asia_tz(o.confirmation_date) <= yesterday_end])
+    today_orders_count = len([o for o in all_orders if today_start <= date.convert_utc_to_asia_tz(o.confirmation_date) <= today])
+    return yesterday_orders_count, today_orders_count
 
 
 def get_all_confirmed_orders() -> List[Order]:
