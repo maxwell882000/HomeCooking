@@ -146,6 +146,9 @@ def phone_number_processor(message):
             error()
             return
         else:
+            if strings.get_string('go_back', language) in message.text:
+                _to_the_payment_method(chat_id, language, user_id)
+                return
             match = re.match(r'\+*998\s*\d{2}\s*\d{3}\s*\d{2}\s*\d{2}', message.text)
             if match is None:
                 error()
