@@ -14,7 +14,7 @@ def get_current_order_by_user(user_id: int) -> Order:
 
 
 def get_order_yesterday_today_statistic():
-    all_orders = Order.query.all()
+    all_orders = Order.query.filter(Order.confirmed == True).all()
     yesterday = date.convert_utc_to_asia_tz(datetime.utcnow() - timedelta(days=1))
     yesterday_start = datetime(yesterday.year, yesterday.month, yesterday.day, tzinfo=yesterday.tzinfo)
     yesterday_end = datetime(yesterday.year, yesterday.month, yesterday.day, 23, 59, 59, tzinfo=yesterday.tzinfo)
