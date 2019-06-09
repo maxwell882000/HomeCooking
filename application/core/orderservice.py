@@ -127,10 +127,10 @@ def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
         # And most cheerful actions begin here...
         if rest_distance <= 3:
             # If distance is in limits 3 kilometres, don't care about it
-            delivery_price = rest_distance * first_3_km
+            delivery_price = first_3_km
         else:
             # Else, calculate first 3 kilometres, than others kilometres
-            price = first_3_km * 3
+            price = first_3_km
             rest_distance -= 3.0
             price += rest_distance * others_km
             delivery_price = price
