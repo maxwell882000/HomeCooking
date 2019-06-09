@@ -52,3 +52,27 @@ def set_cafe_coordinates(coordinates: tuple):
     settings = shelve.open(filename)
     settings['cafe_coordinates'] = coordinates
     settings.close()
+
+
+def set_limit_delivery_price(price: int):
+    """
+    Set limit delivery cost
+    :param price: price value
+    :return: void
+    """
+    settings = shelve.open(filename)
+    settings['limit_delivery_price'] = price
+    settings.close()
+
+
+def get_limit_delivery_price() -> int:
+    """
+    Get limit delivery cost or set default value - 15000
+    :return: limit delivery price
+    """
+    settings = shelve.open(filename)
+    if 'limit_delivery_price' not in settings:
+        settings['limit_delivery_price'] = 15000
+    value = settings['limit_delivery_price']
+    settings.close()
+    return value
