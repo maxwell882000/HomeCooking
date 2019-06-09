@@ -80,12 +80,31 @@ class DeliveryPriceForm(FlaskForm):
                              validators=[DataRequired('Укажите стоимость первых трёх километров')])
     others_km = StringField('Стоимость за остальной путь',
                             validators=[DataRequired('Укажите стоимость за остальные километры')])
+    limit_price = StringField('Лимит стоимости доставки',
+                              validators=[DataRequired('Укажите лимит цены на доставку')])
     submit = SubmitField('Сохранить')
+
+    def validate_int_value(self, field):
+        if not field.data.isdigit():
+            raise ValidationError("Стоимость доставки должна быть указана в цифрах")
+        value = int(field.data)
+        if value <= 0:
+            raise ValidationError('Стоимость доставки должна быть больше нуля')
 
     def fill_from_settings(self):
         delivery_cost = settings.get_delivery_cost()
         self.first_3_km.data = delivery_cost[0]
         self.others_km.data = delivery_cost[1]
+        self.limit_price.data = settings.get_limit_delivery_price()
+    
+    def validate_first_3_km(self, field):
+        self.validate_int_value(field)
+    
+    def validate_others_km(self, field):
+        self.validate_int_value(field)
+    
+    def validate_limit_price(self, field):
+        self.validate_int_value(field)
 
 
 class CafeLocationForm(FlaskForm):

@@ -37,5 +37,7 @@ def set_delivery_cost():
         first_3_km = delivery_cost_form.first_3_km.data
         others_km = delivery_cost_form.others_km.data
         app_settings.set_delivery_cost((first_3_km, others_km))
+        limit_delivery_price = delivery_cost_form.limit_price.data
+        app_settings.set_limit_delivery_price(limit_delivery_price)
         flash('Стоимость доставки изменена', category='success')
     return redirect(url_for('admin.settings'))
