@@ -34,10 +34,10 @@ def set_location():
 def set_delivery_cost():
     delivery_cost_form = DeliveryPriceForm()
     if delivery_cost_form.validate_on_submit():
-        first_3_km = delivery_cost_form.first_3_km.data
-        others_km = delivery_cost_form.others_km.data
+        first_3_km = int(delivery_cost_form.first_3_km.data)
+        others_km = int(delivery_cost_form.others_km.data)
         app_settings.set_delivery_cost((first_3_km, others_km))
-        limit_delivery_price = delivery_cost_form.limit_price.data
-        app_settings.set_limit_delivery_price(limit_delivery_price)
+        limit_delivery_price = int(delivery_cost_form.limit_price.data
+)        app_settings.set_limit_delivery_price(limit_delivery_price)
         flash('Стоимость доставки изменена', category='success')
     return redirect(url_for('admin.settings'))
