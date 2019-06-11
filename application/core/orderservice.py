@@ -165,7 +165,7 @@ def set_phone_number(user_id: int, phone_number: str) -> Order:
     return current_order
 
 
-def confirm_order(user_id: int):
+def confirm_order(user_id: int, first_name: str, last_name: str):
     """
     Confirm order and let him show on admin panel
     :param user_id: User's Telegram-ID
@@ -174,6 +174,9 @@ def confirm_order(user_id: int):
     current_order = get_current_order_by_user(user_id)
     current_order.confirmed = True
     current_order.confirmation_date = datetime.utcnow()
+    current_order.user_name = first_name
+    if last_name:
+        current_order.user_name += " " + last_name
     userservice.clear_user_cart(user_id)
     db.session.commit()
     return current_order

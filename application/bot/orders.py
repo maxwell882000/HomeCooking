@@ -202,7 +202,9 @@ def confirmation_processor(message: Message):
         error()
         return
     if strings.get_string('order.confirm', language) in message.text:
-        order = orderservice.confirm_order(user_id)
+        first_name = message.from_user.first_name
+        last_name = message.from_user.last_name
+        order = orderservice.confirm_order(user_id, first_name, last_name)
         order_success_message = strings.get_string('order.success', language)
         back_to_the_catalog(chat_id, language, order_success_message)
         notify_new_order(order, _total_order_sum(order.order_items.all()))

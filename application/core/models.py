@@ -130,6 +130,7 @@ class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_name = db.Column(db.String(100))
     shipping_method = db.Column(db.String(50))
     payment_method = db.Column(db.String(50))
     address_txt = db.Column(db.String(100))
