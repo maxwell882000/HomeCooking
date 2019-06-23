@@ -8,7 +8,7 @@ from application.admin.forms import CategoryForm, DishForm
 @bp.route('/catalog', methods=['GET'])
 @login_required
 def catalog():
-    categories = dishservice.get_all_categories()
+    categories = dishservice.get_all_categories(sort_by_number=True)
     return render_template('admin/catalog.html', title='Каталог', area='catalog', categories=categories)
 
 
