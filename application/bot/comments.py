@@ -2,6 +2,7 @@ from application import telegram_bot as bot
 from application.core import commentservice, userservice
 from application.resources import strings, keyboards
 from application.utils import bot as botutils
+from application.bot import notifications
 from telebot.types import Message
 
 
@@ -42,6 +43,10 @@ def comments_processor(message: Message):
     if strings.get_string('go_to_menu', language) in message.text:
         botutils.to_main_menu(chat_id, language)
     else:
-        commentservice.add_comment(user_id, message.text)
+        username = message.from_user.first_name
+        if message.from_user.last_name:
+            username += " {}".format(message.from_user.last_name)
+        new_comment = commentservice.add_comment(user_id, message.text, username)
+        notifications.notify_new_comment(new_comment)
         thanks_message = strings.get_string('comments.thanks', language)
         botutils.to_main_menu(chat_id, language, thanks_message)

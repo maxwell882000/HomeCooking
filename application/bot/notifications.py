@@ -1,6 +1,6 @@
 from application import telegram_bot
 from application.core import notifyservice
-from application.core.models import Order
+from application.core.models import Order, Comment
 from application.resources import strings
 from telebot.types import Message
 from telebot.apihelper import ApiException
@@ -32,5 +32,15 @@ def notify_new_order(order: Order, total_sum: int):
             telegram_bot.send_message(chat.chat_id, notification_message, parse_mode='HTML')
             if order.location:
                 telegram_bot.send_location(chat.chat_id, order.location.latitude, order.location.longitude)
+        except ApiException:
+            pass
+
+
+def notify_new_comment(comment: Comment):
+    notification_chats = notifyservice.get_all_notification_chats()
+    notification_message = strings.from_comment_notification(comment)
+    for chat in notification_chats:
+        try:
+            telegram_bot.send_message(chat.chat_id, notification_message, parse_mode='HTML')
         except ApiException:
             pass

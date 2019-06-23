@@ -1,6 +1,6 @@
 import os
 import json
-from application.core.models import Dish, Order
+from application.core.models import Dish, Order, Comment
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -148,3 +148,16 @@ def from_order_notification(order: Order, total_sum):
         order_content += '\n\n'
         order_content += '<b>Стоимость доставки</b>: {} сум'.format(_format_number(order.delivery_price))
     return order_content
+
+
+def from_comment_notification(comment: Comment):
+    comment_content = "<b>У вас новый отзыв!</b>\n\n"
+    comment_content += "<b>От кого:<b/> {}".format(comment.username)
+    if comment.author.username:
+        comment_content += " <i>{}</i>".format(comment.author.username)
+    comment_content += "\n"
+    if comment.author.phone_number:
+        comment_content += "<b>Номер телефона:</b> {}".format(comment.author.phone_number)
+        comment_content += '\n'
+    comment_content += comment.text
+    return comment_content
