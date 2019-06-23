@@ -51,20 +51,23 @@ def from_cart_items(cart_items, language, total) -> str:
 
 
 def from_dish(dish: Dish, language: str) -> str:
-    dish_str_template = '{name}\n\n{description}\n\n{price_str}: {price} {sum_str}'
+    dish_content = ""
     if language == 'uz':
-        dish_str = dish_str_template.format(name=dish.name_uz,
-                                            description=dish.description_uz,
-                                            price_str=get_string('dish.price', language),
-                                            price=_format_number(dish.price),
-                                            sum_str=get_string('sum', language))
+        dish_content += dish.name_uz
     else:
-        dish_str = dish_str_template.format(name=dish.name,
-                                            description=dish.description,
-                                            price_str=get_string('dish.price', language),
-                                            price=_format_number(dish.price),
-                                            sum_str=get_string('sum', language))
-    return dish_str
+        dish_content += dish.name
+    dish_content += '\n\n'
+    if language == 'uz':
+        if dish.description_uz:
+            dish_content += dish.description_uz
+            dish_content += '\n\n'
+    else:
+        if dish.description:
+            dish_content += dish.description
+            dish_content += '\n\n'
+    dish_content += "{}: {} {}".format(get_string('dish.price', language),
+                                       _format_number(dish.price), get_string('sum', language))
+    return dish_content
 
 
 def from_order_shipping_method(value: str, language: str) -> str:
