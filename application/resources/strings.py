@@ -152,7 +152,7 @@ def from_order_notification(order: Order, total_sum):
 
 def from_comment_notification(comment: Comment):
     comment_content = "<b>У вас новый отзыв!</b>\n\n"
-    comment_content += "<b>От кого:<b/> {}".format(comment.username)
+    comment_content += "<b>От кого:</b> {}".format(comment.username)
     if comment.author.username:
         comment_content += " <i>{}</i>".format(comment.author.username)
     comment_content += "\n"
