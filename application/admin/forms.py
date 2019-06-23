@@ -21,10 +21,8 @@ class CategoryForm(FlaskForm):
 class DishForm(FlaskForm):
     name_ru = StringField('Название на русском', validators=[DataRequired('Укажите название блюда на русском')])
     name_uz = StringField('Название на узбекском', validators=[DataRequired('Укажите название блюда на узбексокм')])
-    description_ru = TextAreaField('Описание блюда на русском',
-                                   validators=[DataRequired('Укажите описание блюда на русском')])
-    description_uz = TextAreaField('Описание блюда на узбекском',
-                                   validators=[DataRequired('Укажите описание блюда на узбекском')])
+    description_ru = TextAreaField('Описание блюда на русском')
+    description_uz = TextAreaField('Описание блюда на узбекском')
     category = SelectField('Категория', validators=[DataRequired('Укажите категорию')], coerce=int)
     price = StringField('Цена', validators=[DataRequired('Укажите цену')])
     image = FileField('Изображение',
