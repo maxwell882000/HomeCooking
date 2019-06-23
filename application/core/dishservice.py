@@ -43,7 +43,7 @@ def create_dish(name_ru, name_uz, description_ru, description_uz, image, price, 
                 description=description_ru, description_uz=description_uz,
                 price=price, category_id=category_id)
     if image and image.filename != '':
-        file_path = os.path.join(Config.UPLOAD_DIRECTORY, secure_filename(image.filename))
+        file_path = os.path.join(Config.UPLOAD_DIRECTORY, image.filename)
         files.save_file(image, file_path, recreate=True)
         dish.image_path = file_path
     db.session.add(dish)
@@ -62,7 +62,7 @@ def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image
     if (image and image.filename != '') and not delete_image:
         if dish.image_path:
             files.remove_file(dish.image_path)
-        file_path = os.path.join(Config.UPLOAD_DIRECTORY, secure_filename(image.filename))
+        file_path = os.path.join(Config.UPLOAD_DIRECTORY, image.filename)
         files.save_file(image, file_path)
         dish.image_id = None
         dish.image_path = file_path
