@@ -186,6 +186,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'))
+    username = db.Column(db.String(100))
 
 
 class UserDish(db.Model):
