@@ -1,5 +1,5 @@
 from application import db
-from application.core.models import Dish, DishCategory
+from application.core.models import Dish, DishCategory, CartItem
 from application.core import exceptions
 from typing import List
 from application.utils import files
@@ -76,6 +76,9 @@ def update_dish(dish_id, name_ru, name_uz, description_ru, description_uz, image
 
 def remove_dish(dish_id: int):
     db.session.delete(Dish.query.get_or_404(dish_id))
+    cart_items = CartItem.query.filter(CartItem.dish_id == dish_id).all()
+    for cart_item in cart_items:
+        db.session.delete(cart_item)
     db.session.commit()
 
 
