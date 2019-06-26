@@ -21,6 +21,7 @@
                         <thead>
                             <tr>
                                 <th>№</th>
+                                <th>Имя</th>
                                 <th>Юзернэйм</th>
                                 <th>Номер телефона</th>
                                 <th>Дата регистрации</th>
@@ -30,6 +31,9 @@
                             {% for user in users %}
                                 <tr>
                                     <td>{{ loop.revindex }}</td>
+                                    <td>
+                                        {{ user.full_user_name }}
+                                    </td>
                                     <td>
                                         {% if user.username %}
                                             {{ user.username }}
