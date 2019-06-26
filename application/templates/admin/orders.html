@@ -47,7 +47,11 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {{ order|total_order_sum|price }}
+                                        {% if order.total_amount %}
+                                            {{ order.total_amount|price }}
+                                        {% else %}
+                                            {{ order|total_order_sum|price }}
+                                        {% endif %}
                                     </td>
                                     <td>
                                         <a href="{{ url_for('admin.order', order_id=order.id) }}"

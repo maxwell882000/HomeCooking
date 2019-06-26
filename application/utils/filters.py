@@ -30,6 +30,6 @@ def price(value):
 @app.template_filter()
 def total_order_sum(order):
     order_items = order.order_items.all()
-    summary_dishes_sum = [order_item.count * order_item.dish.price for order_item in order_items]
+    summary_dishes_sum = [order_item.count * order_item.dish.price for order_item in order_items if order_item.dish]
     total = sum(summary_dishes_sum)
     return total
