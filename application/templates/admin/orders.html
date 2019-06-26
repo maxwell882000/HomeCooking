@@ -20,6 +20,8 @@
                                 <th>Номер телефона</th>
                                 <th>Имя покупателя</th>
                                 <th>Способ оплаты</th>
+                                <th>Стоимость доставки</th>
+                                <th>Стоимость заказа</th>
                                 <th>Действия</th>
                             </tr>
                         </thead>
@@ -37,6 +39,16 @@
                                         {% endif %}
                                     </td>
                                     <td>{{ order.payment_method|payment_method }}</td>
+                                    <td>
+                                        {% if order.delivery_price %}
+                                            {{ order.delivery_price|price }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ order|total_order_sum|price }}
+                                    </td>
                                     <td>
                                         <a href="{{ url_for('admin.order', order_id=order.id) }}"
                                            class="btn btn-flat btn-info" data-toggle="tooltip" data-placement="top" title="Посмотреть">
