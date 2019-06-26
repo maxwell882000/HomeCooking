@@ -12,8 +12,6 @@ import logging
 telegram_bot = TeleBot(Config.API_TOKEN, threaded=False)
 
 app = Flask(__name__)
-if 'PRODUCTION' in os.environ:
-    sslify = SSLify(app)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
