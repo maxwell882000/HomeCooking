@@ -81,6 +81,13 @@ def remove_dish(dish_id: int):
     db.session.commit()
 
 
+def toggle_hidden_dish(dish_id: int):
+    dish = Dish.query.get_or_404(dish_id)
+    dish.is_hidden = not dish.is_hidden
+    db.session.commit()
+    return dish.is_hidden
+
+
 def set_dish_number(dish_id, number):
     dish = get_dish_by_id(dish_id)
     dish.number = number
@@ -97,24 +104,29 @@ def get_dish_by_id(dish_id: int):
     return Dish.query.get_or_404(dish_id)
 
 
-def get_dishes_by_category_name(name: str, language: str, sort_by_number: bool = False) -> list:
+def get_dishes_by_category_name(name: str, language: str, sort_by_number: bool = False, include_hidden=False) -> list:
     if language == 'uz':
-        dish_category = DishCategory.query.filter(DishCategory.name_uz == name).first()
+        category = DishCategory.query.filter(DishCategory.name_uz == name).first()
     else:
-        dish_category = DishCategory.query.filter(DishCategory.name == name).first()
-    if dish_category:
+        category = DishCategory.query.filter(DishCategory.name == name).first()
+    if category:
+        query = category.dishes
+        if not include_hidden:
+            query = query.filter(Dish.is_hidden != True)
         if sort_by_number:
-            return dish_category.dishes.order_by(Dish.number.asc()).all()
-        return dish_category.dishes.all()
+            query = query.order_by(Dish.number.asc())
+        return query.all()
     else:
         raise exceptions.CategoryNotFoundError()
 
 
-def get_dishes_from_category(category: DishCategory, sort_by_number: bool = False) -> List[Dish]:
+def get_dishes_from_category(category: DishCategory, sort_by_number: bool = False, include_hidden=False) -> List[Dish]:
+    query = category.dishes
+    if not include_hidden:
+        query = query.filter(Dish.is_hidden != True)
     if sort_by_number:
-        return category.dishes.order_by(Dish.number.asc()).all()
-    else:
-        return category.dishes.all()
+        query = query.order_by(Dish.number.asc())
+    return query.all()
 
 
 def get_dish_by_name(name: str, language: str) -> Dish:
