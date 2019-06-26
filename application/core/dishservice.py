@@ -5,7 +5,6 @@ from typing import List
 from application.utils import files
 import os
 from config import Config
-from werkzeug.utils import secure_filename
 
 
 def get_all_categories(sort_by_number: bool = False) -> List[DishCategory]:
