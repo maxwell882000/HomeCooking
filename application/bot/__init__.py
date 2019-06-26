@@ -22,7 +22,7 @@ if 'PRODUCTION' in os.environ:
             abort(400)
 
     telegram_bot.remove_webhook()
-    telegram_bot.set_webhook(Config.WEBHOOK_URL_BASE + Config.WEBHOOK_URL_PATH)
+    telegram_bot.set_webhook(Config.WEBHOOK_URL_BASE + Config.WEBHOOK_URL_PATH, certificate=open(Config.WEBHOOK_SSL_CERT, 'r'))
 
 
 @telegram_bot.message_handler(content_types=['text'], func=lambda m: True)

@@ -11,6 +11,7 @@ class Config:
     WEBHOOK_PORT = os.environ.get('PORT', 5000)
     WEBHOOK_URL_BASE = 'https://%s' % WEBHOOK_HOST
     WEBHOOK_URL_PATH = '/%s/' % API_TOKEN
+    WEBHOOK_SSL_CERT = '/home/telegrambot/HomeCooking/certs/cert.pem'
     UPLOAD_DIRECTORY = os.path.join(basedir, 'data')
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
