@@ -25,3 +25,11 @@ def payment_method(value):
 @app.template_filter()
 def price(value):
     return '{0:,}'.format(value).replace(',', ' ')
+
+
+@app.template_filter()
+def total_order_sum(order):
+    order_items = order.order_items.all()
+    summary_dishes_sum = [order_item.count * order_item.dish.price for order_item in order_items]
+    total = sum(summary_dishes_sum)
+    return total
