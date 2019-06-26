@@ -116,7 +116,7 @@ def set_address_by_map_location(user_id: int, map_location: tuple) -> bool:
     # Calculate a delivery price
     delivery_cost = settings.get_delivery_cost()
     first_3_km = delivery_cost[0]
-    others_km = delivery_cost[0]
+    others_km = delivery_cost[1]
     # Calculate distance from cafe to customer
     distance = geocode.distance_between_two_points(map_location, settings.get_cafe_coordinates())
     rest_distance = distance[0]
