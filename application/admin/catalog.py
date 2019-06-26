@@ -119,3 +119,15 @@ def set_category_number(category_id: int):
     number = request.get_json()['number']
     dishservice.set_category_number(category_id, number)
     return '', 201
+
+
+@bp.route('/catalog/dish/<int:dish_id>/toggle-hide', methods=['GET'])
+@login_required
+def toggle_hide_dish(dish_id: int):
+    result = dishservice.toggle_hidden_dish(dish_id)
+    if result:
+        message = 'Блюдо теперь будет показано в меню Telegram-бота'
+    else:
+        message = 'Блюдо скрыто из меню Telegram-бота!'
+    flash(message, category='success')
+    return redirect(url_for('admin.catalog'))

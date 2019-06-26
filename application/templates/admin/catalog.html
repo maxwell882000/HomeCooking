@@ -51,6 +51,13 @@
                                         <td></td>
                                         <td>{{ dish.name }} | {{ dish.name_uz }}</td>
                                         <td>
+                                            <a href="{{ url_for('admin.toggle_hide_dish', dish_id=dish.id) }}" class="btn btn-flat btn-info" data-toggle="tooltip" data-placement="top" title="{% if dish.is_hidden %}Показать{% else %}Скрыть{% endif %}">
+                                                {% if dish.is_hidden %}
+                                                    <i class="fas fa-eye"></i>
+                                                {% else %}
+                                                    <i class="fas fa-eye-slash"></i>
+                                                {% endif %}
+                                            </a>
                                             <a href="{{ url_for('admin.dish', dish_id=dish.id) }}" class="btn btn-flat bg-orange"><i class="fas fa-edit"></i></a>
                                             <a href="{{ url_for('admin.remove_dish', dish_id=dish.id) }}" class="btn btn-danger btn-flat"><i class="fas fa-trash"></i></a>
                                         </td>
