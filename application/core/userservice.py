@@ -9,8 +9,9 @@ def is_user_exists(user_id: int):
     return User.query.get(user_id) is not None
 
 
-def register_user(user_id: int, username: str, language: str):
-    user = User(id=user_id, username=username, language=language, registration_date=datetime.utcnow())
+def register_user(user_id: int, username: str, full_user_name: str, phone_number: str, language: str):
+    user = User(id=user_id, username=username, language=language, registration_date=datetime.utcnow(),
+                full_user_name=full_user_name, phone_number=phone_number)
     db.session.add(user)
     db.session.commit()
 
