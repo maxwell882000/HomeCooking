@@ -52,7 +52,7 @@ def _to_the_confirmation(chat_id, current_order, language):
     summary_order_message = strings.from_order(current_order, language, total)
     confirmation_keyboard = keyboards.get_keyboard('order.confirmation', language)
     bot.send_message(chat_id, summary_order_message, parse_mode='HTML', reply_markup=confirmation_keyboard)
-    bot.register_next_step_handler_by_chat_id(chat_id, confirmation_processor)
+    bot.register_next_step_handler_by_chat_id(chat_id, confirmation_processor, total=total)
 
 
 def order_processor(message: Message):
@@ -188,7 +188,7 @@ def address_processor(message: Message):
         error()
 
 
-def confirmation_processor(message: Message):
+def confirmation_processor(message: Message, **kwargs):
     chat_id = message.chat.id
     user_id = message.from_user.id
     language = userservice.get_user_language(user_id)
@@ -204,10 +204,11 @@ def confirmation_processor(message: Message):
     if strings.get_string('order.confirm', language) in message.text:
         first_name = message.from_user.first_name
         last_name = message.from_user.last_name
-        order = orderservice.confirm_order(user_id, first_name, last_name)
+        total = kwargs.get('total')
+        order = orderservice.confirm_order(user_id, first_name, last_name, total)
         order_success_message = strings.get_string('order.success', language)
         back_to_the_catalog(chat_id, language, order_success_message)
-        notify_new_order(order, _total_order_sum(order.order_items.all()))
+        notify_new_order(order, total)
     elif strings.get_string('order.cancel', language) in message.text:
         order_canceled_message = strings.get_string('order.canceled', language)
         back_to_the_catalog(chat_id, language, order_canceled_message)
