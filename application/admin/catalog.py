@@ -125,7 +125,7 @@ def set_category_number(category_id: int):
 @login_required
 def toggle_hide_dish(dish_id: int):
     result = dishservice.toggle_hidden_dish(dish_id)
-    if result:
+    if not result:
         message = 'Блюдо теперь будет показано в меню Telegram-бота'
     else:
         message = 'Блюдо скрыто из меню Telegram-бота!'
