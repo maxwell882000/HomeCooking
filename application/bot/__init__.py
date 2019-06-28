@@ -27,20 +27,6 @@ if 'PRODUCTION' in os.environ:
                              certificate=open(Config.WEBHOOK_SSL_CERT, 'r'))
 
 
-@telegram_bot.message_handler(content_types=['text'], func=lambda m: True)
-def empty_message(message: telebot.types.Message):
-    chat_id = message.chat.id
-    user_id = message.from_user.id
-    if not userservice.is_user_registered(user_id):
-        registration.welcome(message)
-        return
-    language = userservice.get_user_language(user_id)
-    main_menu_message = strings.get_string('main_menu.choose_option', language)
-    main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
-    telegram_bot.send_message(chat_id, main_menu_message, reply_markup=main_menu_keyboard)
-    return
-
-
 @telegram_bot.message_handler(commands=['sorrytest'])
 def send_test_sorry_message(message: telebot.types.Message):
     message_text = 'Коллектив “Домашней кухни” приносит свои извинения за предоставленные неудобства в виде ' \
@@ -82,3 +68,17 @@ def send_sorry_message(message: telebot.types.Message):
             telegram_bot.send_message(chat_id, str(err))
         time.sleep(1)
     telegram_bot.send_message(message.chat.id, 'Извинения отправлены {} людям!'.format(len(customers)))
+
+
+@telegram_bot.message_handler(content_types=['text'], func=lambda m: True)
+def empty_message(message: telebot.types.Message):
+    chat_id = message.chat.id
+    user_id = message.from_user.id
+    if not userservice.is_user_registered(user_id):
+        registration.welcome(message)
+        return
+    language = userservice.get_user_language(user_id)
+    main_menu_message = strings.get_string('main_menu.choose_option', language)
+    main_menu_keyboard = keyboards.get_keyboard('main_menu', language)
+    telegram_bot.send_message(chat_id, main_menu_message, reply_markup=main_menu_keyboard)
+    return
