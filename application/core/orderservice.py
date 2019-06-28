@@ -25,6 +25,16 @@ def get_order_yesterday_today_statistic():
     return yesterday_orders_count, today_orders_count
 
 
+def get_yesterday_orders():
+    all_orders = get_all_confirmed_orders()
+    yesterday = date.convert_utc_to_asia_tz(datetime.utcnow() - timedelta(days=1))
+    yesterday_start = datetime(yesterday.year, yesterday.month, yesterday.day, tzinfo=yesterday.tzinfo)
+    yesterday_end = datetime(yesterday.year, yesterday.month, yesterday.day, 23, 59, 59, tzinfo=yesterday.tzinfo)
+    yesterday_orders = [o for o in all_orders if yesterday_start <= date.convert_utc_to_asia_tz(o.confirmation_date) <= yesterday_end]
+    return yesterday_orders
+
+
+
 def get_all_confirmed_orders() -> List[Order]:
     return Order.query.filter(Order.confirmed == True).order_by(Order.confirmation_date.desc()).all()
 
