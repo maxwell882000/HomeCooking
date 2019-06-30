@@ -179,11 +179,7 @@ def from_order_trello_card(order: Order):
     order_content += 'Номер телефона: {}\n'.format(order.phone_number)
     order_content += 'Имя покупателя: {}\n'.format(order.user_name)
     order_content += 'Способ оплаты: {}\n'.format(from_order_payment_method(order.payment_method, 'ru'))
-    if order.address_txt:
-        order_content += 'Адрес: {}'.format(order.address_txt)
-    elif order.location:
-        order_content += 'Адрес: {}'.format(order.location.address)
-    order_content += '\n\n'
+    order_content += '\n'
     order_item_tmpl = '{name}\n{count} x {price} = {sum} сум\n'
     order_items = order.order_items.all()
     grouped_order_items = {}
@@ -204,6 +200,15 @@ def from_order_trello_card(order: Order):
     if order.delivery_price:
         order_content += '\n\n'
         order_content += 'Стоимость доставки: {} сум'.format(_format_number(order.delivery_price))
+    return order_content
+
+
+def from_order_to_trello_card_desc(order: Order):
+    order_content = ""
+    if order.address_txt:
+        order_content += 'Адрес: {}'.format(order.address_txt)
+    elif order.location:
+        order_content += 'Адрес: {}'.format(order.location.address)
     if order.location:
         order_content += '\n\n'
         order_content += 'Локация: https://www.google.com/maps/search/?api=1&query={lat},{long}'.format(lat=order.location.latitude,

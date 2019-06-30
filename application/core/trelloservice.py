@@ -18,6 +18,8 @@ def add_order_to_trello_board(order: Order):
         orders_list = list(filter(lambda l: l.name == list_name, all_lists))[0]
     except IndexError:
         return
-    card_name = 'Заказ #{}'.format(order.id)
-    card_description = strings.from_order_trello_card(order)
-    orders_list.add_card(name=card_name, desc=card_description)
+    card_number = 'Заказ #{}\n'.format(order.id)
+    order_info = strings.from_order_trello_card(order)
+    card_name = card_number + order_info
+    card_desc = strings.from_order_to_trello_card_desc(order)
+    orders_list.add_card(name=card_name, desc=card_desc)
