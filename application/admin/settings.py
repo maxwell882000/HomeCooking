@@ -1,7 +1,7 @@
 from . import bp
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_required
-from .forms import DeliveryPriceForm, CafeLocationForm
+from .forms import DeliveryPriceForm, CafeLocationForm, TrelloSettingsForm
 import settings as app_settings
 
 
@@ -12,9 +12,12 @@ def settings():
     location_form = CafeLocationForm()
     delivery_cost_form.fill_from_settings()
     location_form.fill_from_settings()
+    trello_form = TrelloSettingsForm()
+    trello_form.fill_from_settings()
     return render_template('admin/settings.html', title='Настройки', area='settings',
                            cost_form=delivery_cost_form,
-                           location_form=location_form)
+                           location_form=location_form,
+                           trello_form=trello_form)
 
 
 @bp.route('/settings/location', methods=['POST'])
@@ -26,7 +29,15 @@ def set_location():
         longitude = location_form.longitude.data
         app_settings.set_cafe_coordinates((latitude, longitude))
         flash('Координаты изменены', category='success')
-    return redirect(url_for('admin.settings'))
+        return redirect(url_for('admin.settings'))
+    delivery_cost_form = DeliveryPriceForm()
+    delivery_cost_form.fill_from_settings()
+    trello_form = TrelloSettingsForm()
+    trello_form.fill_from_settings()
+    return render_template('admin/settings.html', title='Настройки', area='settings',
+                           cost_form=delivery_cost_form,
+                           location_form=location_form,
+                           trello_form=trello_form)
 
 
 @bp.route('/settings/delivery-cost', methods=['POST'])
@@ -40,4 +51,32 @@ def set_delivery_cost():
         limit_delivery_price = int(delivery_cost_form.limit_price.data)
         app_settings.set_limit_delivery_price(limit_delivery_price)
         flash('Стоимость доставки изменена', category='success')
-    return redirect(url_for('admin.settings'))
+        return redirect(url_for('admin.settings'))
+    location_form = CafeLocationForm()
+    location_form.fill_from_settings()
+    trello_form = TrelloSettingsForm()
+    trello_form.fill_from_settings()
+    return render_template('admin/settings.html', title='Настройки', area='settings',
+                           cost_form=delivery_cost_form,
+                           location_form=location_form,
+                           trello_form=trello_form)
+
+
+@bp.route('/settings/trello', methods=['POST'])
+@login_required
+def set_trello_settings():
+    trello_form = TrelloSettingsForm()
+    if trello_form.validate_on_submit():
+        board_name = trello_form.board_name.data
+        list_name = trello_form.list_name.data
+        app_settings.set_trello_settings((board_name, list_name))
+        flash('Настройки Trello изменены!', category='success')
+        return redirect(url_for('admin.settings'))
+    delivery_cost_form = DeliveryPriceForm()
+    location_form = CafeLocationForm()
+    delivery_cost_form.fill_from_settings()
+    location_form.fill_from_settings()
+    return render_template('admin/settings.html', title='Настройки', area='settings',
+                           cost_form=delivery_cost_form,
+                           location_form=location_form,
+                           trello_form=trello_form)
