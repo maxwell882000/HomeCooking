@@ -127,7 +127,7 @@ class TrelloSettingsForm(FlaskForm):
             return
         all_boards = trello_client.list_boards(board_filter='open')
         try:
-            list(filter(lambda b: b.name == settings.get_trello_settings()[0], all_boards))[0]
+            list(filter(lambda b: b.name == field.data, all_boards))[0]
         except IndexError:
             raise ValidationError('Указанной доски не существует среди открытых')
 
@@ -135,9 +135,19 @@ class TrelloSettingsForm(FlaskForm):
         if self.board_name.data == '' or field.data == '':
             return
         all_boards = trello_client.list_boards(board_filter='open')
-        board = list(filter(lambda b: b.name == settings.get_trello_settings()[0], all_boards))[0]
+        try:
+            board = list(filter(lambda b: b.name == self.board_name.data, all_boards))[0]
+        except IndexError:
+            return
         all_lists = board.open_lists()
         try:
-            list(filter(lambda l: l.name == settings.get_trello_settings()[1], all_lists))[0]
+            list(filter(lambda l: l.name == field.data, all_lists))[0]
         except IndexError:
             raise ValidationError('Указанного списка не существует среди открытых в доске %s' % board.name)
+
+    def fill_from_settings(self):
+        current_trello_settings = settings.get_trello_settings()
+        if not current_trello_settings:
+            return
+        self.board_name.data = current_trello_settings[0]
+        self.list_name.data = current_trello_settings[1]
