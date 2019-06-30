@@ -126,9 +126,11 @@ def from_order(order: Order, language: str, total: int) -> str:
     return order_content
 
 
-def from_order_notification(order: Order, total_sum):
-    order_content = "<b>Новый заказ!</b>"
-    order_content += '\n\n'
+def from_order_notification(order: Order, total_sum, include_new_order_text=True):
+    order_content = ''
+    if include_new_order_text:
+        order_content = "<b>Новый заказ! #{}</b>".format(order.id)
+        order_content += '\n\n'
     order_content += '<b>Номер телефона:</b> {}\n'.format(order.phone_number)
     order_content += '<b>Имя покупателя:</b> {}\n'.format(order.user_name)
     order_content += '<b>Способ оплаты:</b> {}\n'.format(from_order_payment_method(order.payment_method, 'ru'))
@@ -137,15 +139,22 @@ def from_order_notification(order: Order, total_sum):
     elif order.location:
         order_content += '<b>Адрес:</b> {}'.format(order.location.address)
     order_content += '\n\n'
-    order_item_tmpl = '<b>{name}</b>\n{count} x {price} = {sum} сум\n'
-    for order_item in order.order_items.all():
-        dish = order_item.dish
-        dish_name = dish.name
-        order_item_str = order_item_tmpl.format(name=dish_name,
-                                                count=order_item.count,
-                                                price=_format_number(dish.price),
-                                                sum=_format_number(order_item.count * dish.price))
-        order_content += order_item_str
+    order_item_tmpl = '    <i>{name}</i>\n    {count} x {price} = {sum} сум\n'
+    order_items = order.order_items.all()
+    grouped_order_items = {}
+    categories_list = [oi.dish.category for oi in order_items]
+    categories_list = list(set(categories_list))
+    for category in categories_list:
+        order_items_by_category = list(filter(lambda oi: oi.dish.category_id == category.id, order_items))
+        grouped_order_items[category.name] = order_items_by_category
+    for category, ois in grouped_order_items.items():
+        group_content = '<b>%s</b>:\n' % category
+        for order_item in ois:
+            group_content += order_item_tmpl.format(name=order_item.dish.name,
+                                                    count=order_item.count,
+                                                    price=_format_number(order_item.dish.price),
+                                                    sum=_format_number(order_item.dish.price * order_item.count))
+        order_content += group_content
     order_content += "<b>Общая стоимость заказа</b>: {} сум".format(_format_number(total_sum))
     if order.delivery_price:
         order_content += '\n\n'
