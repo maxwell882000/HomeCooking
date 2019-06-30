@@ -70,7 +70,7 @@ def send_sorry_message(message: telebot.types.Message):
     telegram_bot.send_message(message.chat.id, 'Извинения отправлены {} людям!'.format(len(customers)))
 
 
-@telegram_bot.message_handler(content_types=['text'], func=lambda m: True)
+@telegram_bot.message_handler(content_types=['text'], func=lambda m: m.chat.type == 'private')
 def empty_message(message: telebot.types.Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
