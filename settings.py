@@ -91,12 +91,12 @@ def get_trello_settings() -> Optional[Tuple[str, str]]:
     return value
 
 
-def set_trello_settings(settings: Tuple[str: str]):
+def set_trello_settings(trello_settings: Tuple[str, str]):
     """
     Set Trello configurations
     :param settings: Tuple of (board name, list name)
     :return: void
     """
     settings = shelve.open(filename)
-    settings['trello_settings'] = settings
+    settings['trello_settings'] = trello_settings
     settings.close()
