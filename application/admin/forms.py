@@ -4,6 +4,7 @@ from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectFi
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from flask_wtf.file import FileAllowed
 from application.core.models import Dish, DishCategory
+from application import trello_client
 import settings
 from flask_login import current_user
 
@@ -114,3 +115,29 @@ class CafeLocationForm(FlaskForm):
         coordinates = settings.get_cafe_coordinates()
         self.latitude.data = coordinates[0]
         self.longitude.data = coordinates[1]
+
+
+class TrelloSettingsForm(FlaskForm):
+    board_name = StringField('Название доски', validators=[DataRequired('Укажите название доски Trello')])
+    list_name = StringField('Название списка', validators=[DataRequired('Укажите название списка Trello')])
+    submit = SubmitField('Сохранить')
+
+    def validate_board_name(self, field):
+        if field.data == '':
+            return
+        all_boards = trello_client.list_boards(board_filter='open')
+        try:
+            list(filter(lambda b: b.name == settings.get_trello_settings()[0], all_boards))[0]
+        except IndexError:
+            raise ValidationError('Указанной доски не существует среди открытых')
+
+    def validate_list_name(self, field):
+        if self.board_name.data == '' or field.data == '':
+            return
+        all_boards = trello_client.list_boards(board_filter='open')
+        board = list(filter(lambda b: b.name == settings.get_trello_settings()[0], all_boards))[0]
+        all_lists = board.open_lists()
+        try:
+            list(filter(lambda l: l.name == settings.get_trello_settings()[1], all_lists))[0]
+        except IndexError:
+            raise ValidationError('Указанного списка не существует среди открытых в доске %s' % board.name)
