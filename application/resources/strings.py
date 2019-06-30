@@ -204,4 +204,8 @@ def from_order_trello_card(order: Order):
     if order.delivery_price:
         order_content += '\n\n'
         order_content += 'Стоимость доставки: {} сум'.format(_format_number(order.delivery_price))
+    if order.location:
+        order_content += '\n\n'
+        order_content += 'Локация: https://www.google.com/maps/search/?api=1&query={lat},{long}'.format(lat=order.location.latitude,
+                                                                                    long=order.location.longitude)
     return order_content
