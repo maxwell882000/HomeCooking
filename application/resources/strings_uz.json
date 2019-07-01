@@ -38,6 +38,7 @@
     "order.terminal": "\uD83D\uDCB3 Terminal",
     "order.payment_error": "Quyidagi to'lov usulini tanlang",
     "order.delivery_price_helper": "*Yetkazib berish buyurtma summasiga kirmaydi.",
+    "order.delivery_time": "<i>Operatorni chaqirgandan so'ng sizning buyurtmangiz rasmiylashtiriladi va 40-60 daqiqa ichida yetkaziladi</i>",
     "order.phone_number": "Raqamni <b>+998 ** *** ** **</b> formatda ko`rsating yoki quyidagi variantlardan foydalaning",
     "order.confirm": "✅ Tasdiqlash",
     "order.cancel": "❌ Bekor Qilish",

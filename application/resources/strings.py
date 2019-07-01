@@ -123,6 +123,8 @@ def from_order(order: Order, language: str, total: int) -> str:
                                                    get_string('sum', language))
         order_content += '\n\n'
         order_content += '<i>{}</i>'.format(get_string('order.delivery_price_helper', language))
+    order_content += '\n\n'
+    order_content += get_string('order.delivery_time', language)
     return order_content
 
 
