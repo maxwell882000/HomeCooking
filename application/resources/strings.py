@@ -156,7 +156,7 @@ def from_order_notification(order: Order, total_sum):
                                                     price=_format_number(order_item.dish.price),
                                                     sum=_format_number(order_item.dish.price * order_item.count))
         order_content += group_content
-    order_content += "<b>Общая стоимость заказа</b>: {} сум".format(_format_number(total_sum))
+    order_content += "<b>Общая стоимость заказа</b>: {} сум".format(_format_number(order.total_amount))
     if order.delivery_price:
         order_content += '\n\n'
         order_content += '<b>Стоимость доставки</b>: {} сум'.format(_format_number(order.delivery_price))
